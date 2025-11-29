@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta name="author" content="Loresa Jashari" />
+    <meta
+      name="description"
+      content="Book Exchange Club – Bücher tauschen, teilen und weitergeben, strukturiert als CSV-Daten."
+    />
+    <meta
+      name="keywords"
+      content="Book Exchange, Büchertausch, CSV, Hobby"
+    />
+    <title>Book Exchange Club – Hobby 2</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-title">Valeriia &amp; Loresa</div>
+          <div class="brand-subtitle">
+            GLIN Semesterarbeit · Informationssystem
+          </div>
+        </div>
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav-list">
+            <li>
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li>
+              <a href="book-exchange.html" class="nav-link nav-link--active"
+                >Book Exchange</a
+              >
+            </li>
+            <li>
+              <a href="musik.html" class="nav-link">Musik als Ruhepunkt</a>
+            </li>
+            <li>
+              <a href="impressum.html" class="nav-link">Impressum</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="section" aria-labelledby="be-title">
+        <div class="section-header">
+          <h1 id="be-title" class="section-title">Book Exchange Club</h1>
+          <p class="section-subtitle">
+            Bücher tauschen statt stapeln – als kleiner, nachhaltiger Kreislauf.
+          </p>
+        </div>
+
+        <article class="card">
+          <h2 class="card-title">Über dieses Hobby</h2>
+          <p class="card-text">
+            Bücher haben für mich schon immer eine besondere Bedeutung. Sie
+            erweitern den Horizont, regen zum Nachdenken an und erzählen
+            Geschichten, die man am liebsten weitergeben möchte.
+          </p>
+          <p class="card-text">
+            Deshalb habe ich den Book Exchange Club ins Leben gerufen – eine
+            kleine Plattform, auf der Leser:innen ihre Bücher zum Tausch
+            anbieten können. Das Besondere: Du weisst nicht, welches Buch du im
+            Gegenzug erhältst. Du gibst ein Buch weiter – und bekommst zufällig
+            eines von jemand anderem zugeschickt.
+          </p>
+          <p class="card-text">
+            So entsteht ein spannender und nachhaltiger Kreislauf, bei dem
+            Geschichten weiterwandern, neue Entdeckungen gemacht werden und
+            Bücher nicht verstauben, sondern weiterleben. Technisch werden die
+            Angebote in einer CSV-Datei gespeichert und ausgelesen.
+          </p>
+        </article>
+      </section>
+
+      <!-- Tabelle für CSV-Daten -->
+      <section class="section" aria-labelledby="be-table-title">
+        <div class="section-header">
+          <h2 id="be-table-title" class="section-title">
+            Aktuelle Buchangebote
+          </h2>
+          <p class="section-subtitle">
+            Diese Tabelle zeigt alle aktuell verfügbaren Bücher an, die in der
+            CSV-Datei gespeichert sind. Zunächst werden Platzhalter verwendet.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Titel</th>
+                <th>Zustand</th>
+                <th>Standort</th>
+                <th>Kontakt</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Beispielroman</td>
+                <td>Gut</td>
+                <td>Zürich</td>
+                <td>beispiel@mail.ch</td>
+                <td>Verfügbar</td>
+              </tr>
+              <tr>
+                <td>Sachbuch X</td>
+                <td>Wie neu</td>
+                <td>Winterthur</td>
+                <td>kontakt@example.com</td>
+                <td>Reserviert</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Formular für neue Angebote -->
+      <section class="section" aria-labelledby="be-form-title">
+        <div class="section-header">
+          <h2 id="be-form-title" class="section-title">
+            Neues Buch zum Tausch anbieten
+          </h2>
+          <p class="section-subtitle">
+            Über dieses Formular können neue Bücher in die CSV-Datei eingetragen
+            werden. So bleibt die Übersicht immer aktuell.
+          </p>
+        </div>
+
+        <form class="form" method="post" action="cgi-bin/book-exchange.sh">
+          <!-- action ist ein Platzhalter für das entsprechende CGI/Bash-Skript -->
+
+          <div class="form-row form-row--2">
+            <div>
+              <label for="book-title">Buchtitel</label>
+              <input
+                type="text"
+                id="book-title"
+                name="book_title"
+                required
+                placeholder="Titel des Buches"
+              />
+            </div>
+            <div>
+              <label for="condition">Zustand</label>
+              <select id="condition" name="condition" required>
+                <option value="">Bitte wählen</option>
+                <option value="wie-neu">Wie neu</option>
+                <option value="gut">Gut</option>
+                <option value="gebraucht">Gebraucht</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row form-row--2">
+            <div>
+              <label for="location">Standort</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                required
+                placeholder="z.B. Zürich, Chur, St. Gallen"
+              />
+            </div>
+            <div>
+              <label for="status">Status</label>
+              <select id="status" name="status" required>
+                <option value="">Bitte wählen</option>
+                <option value="verfügbar">Verfügbar</option>
+                <option value="reserviert">Reserviert</option>
+                <option value="vergeben">Vergeben</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="contact">Kontakt-E-Mail</label>
+            <input
+              type="email"
+              id="contact"
+              name="contact"
+              required
+              placeholder="Ihre E-Mail-Adresse"
+            />
+          </div>
+
+          <div class="form-row">
+            <button type="submit" class="btn btn-primary">
+              Angebot speichern
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          &copy; 2025 Valeriia Mytsik &amp; Loresa Jashari · Book Exchange Club
+        </div>
+        <div class="footer-links">
+          <a href="mailto:loresa@example.com">loresa@example.com</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

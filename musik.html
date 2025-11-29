@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta name="author" content="Valeriia Mytsik" />
+    <meta
+      name="description"
+      content="Musik als Ruhepunkt – Gitarrenmomente festhalten und als XML-Daten strukturieren."
+    />
+    <meta
+      name="keywords"
+      content="Musik, Gitarre, Ruhe, XML, Hobby"
+    />
+    <title>Musik als Ruhepunkt – Hobby 1</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-title">Valeriia &amp; Loresa</div>
+          <div class="brand-subtitle">
+            GLIN Semesterarbeit · Informationssystem
+          </div>
+        </div>
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav-list">
+            <li>
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li>
+              <a href="book-exchange.html" class="nav-link">Book Exchange</a>
+            </li>
+            <li>
+              <a href="musik.html" class="nav-link nav-link--active"
+                >Musik als Ruhepunkt</a
+              >
+            </li>
+            <li>
+              <a href="impressum.html" class="nav-link">Impressum</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="section" aria-labelledby="musik-title">
+        <div class="section-header">
+          <h1 id="musik-title" class="section-title">Musik als Ruhepunkt</h1>
+          <p class="section-subtitle">
+            Gitarrenmomente und Songs, die mich im Alltag begleiten – später als
+            XML-Daten strukturiert.
+          </p>
+        </div>
+
+        <article class="card">
+          <h2 class="card-title">Über dieses Hobby</h2>
+          <p class="card-text">
+            Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht,
+            um perfekt zu sein – eher, um den Kopf freizubekommen. Früher habe
+            ich regelmässig gespielt und sogar darüber nachgedacht, einen
+            Musik-Blog zu starten.
+          </p>
+          <p class="card-text">
+            Heute spiele ich vor allem für mich: abends, wenn es ruhig wird,
+            oder wenn ich einfach etwas Abstand brauche. Trotzdem gibt es einen
+            kleinen Traum: ein Konzert geben – ohne Druck, nur aus Freude an der
+            Musik.
+          </p>
+          <p class="card-text">
+            In dieser Anwendung halte ich besondere Momente mit meiner Gitarre
+            fest: Songs, Stimmungen und Situationen. Technisch werden die
+            Einträge als XML-Daten gespeichert und später wieder ausgelesen.
+          </p>
+        </article>
+      </section>
+
+      <!-- Tabelle für XML-Daten -->
+      <section class="section" aria-labelledby="musik-table-title">
+        <div class="section-header">
+          <h2 id="musik-table-title" class="section-title">
+            Meine Musikmomente
+          </h2>
+          <p class="section-subtitle">
+            In dieser Übersicht werden die gespeicherten XML-Einträge angezeigt.
+            Zunächst werden Platzhalter verwendet.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Song</th>
+                <th>Künstler/in</th>
+                <th>Datum</th>
+                <th>Stimmung</th>
+                <th>Situation</th>
+                <th>Notizen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Beispielsong 1</td>
+                <td>Artist A</td>
+                <td>2025-01-01</td>
+                <td>ruhig</td>
+                <td>Abend zu Hause</td>
+                <td>Platzhaltereintrag – wird später aus XML geladen.</td>
+              </tr>
+              <tr>
+                <td>Beispielsong 2</td>
+                <td>Artist B</td>
+                <td>2025-02-10</td>
+                <td>nachdenklich</td>
+                <td>Spaziergang</td>
+                <td>Weitere Testzeile für die Tabellenstruktur.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Formular für neue Musikmomente -->
+      <section class="section" aria-labelledby="musik-form-title">
+        <div class="section-header">
+          <h2 id="musik-form-title" class="section-title">
+            Neuen Musikmoment erfassen
+          </h2>
+          <p class="section-subtitle">
+            Über dieses Formular werden neue Einträge erfasst und in der
+            XML-Datei gespeichert (Logik via CGI/Bash, nicht in HTML/CSS).
+          </p>
+        </div>
+
+        <form class="form" method="post" action="cgi-bin/musik-momente.sh">
+          <!-- action ist ein Platzhalter für das CGI-Skript -->
+
+          <div class="form-row form-row--2">
+            <div>
+              <label for="song">Songtitel</label>
+              <input
+                type="text"
+                id="song"
+                name="song"
+                required
+                placeholder="Titel des Songs"
+              />
+            </div>
+            <div>
+              <label for="artist">Künstler/in</label>
+              <input
+                type="text"
+                id="artist"
+                name="artist"
+                required
+                placeholder="Name der Künstlerin / des Künstlers"
+              />
+            </div>
+          </div>
+
+          <div class="form-row form-row--2">
+            <div>
+              <label for="date">Datum</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                required
+              />
+            </div>
+            <div>
+              <label for="mood">Stimmung</label>
+              <input
+                type="text"
+                id="mood"
+                name="mood"
+                placeholder="z.B. ruhig, energiegeladen, melancholisch"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="situation">Situation</label>
+            <input
+              type="text"
+              id="situation"
+              name="situation"
+              placeholder="z.B. Abend zu Hause, unterwegs, Pause im Studium"
+            />
+          </div>
+
+          <div class="form-row">
+            <label for="notes">Notizen</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="Was hat dieser Moment für dich bedeutet?"
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <button type="submit" class="btn btn-primary">
+              Musikmoment speichern
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          &copy; 2025 Valeriia Mytsik &amp; Loresa Jashari · Musik als Ruhepunkt
+        </div>
+        <div class="footer-links">
+          <a href="mailto:valeriia@example.com">valeriia@example.com</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
