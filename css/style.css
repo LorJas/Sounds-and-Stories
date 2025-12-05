@@ -279,6 +279,8 @@ text-decoration: none;
 
 .btn-primary:hover, .btn-primary:focus-visible {transform: translateY(-1px);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
+  color: var(--color-surface);
+
 }
 
 .btn-ghost {border-color: var(--color-border);
