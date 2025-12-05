@@ -122,6 +122,11 @@ a:focus-visible, button:focus-visible {
 
 .brand-title {font-size: 1.25rem;
 font-weight: 600;
+text-decoration: none;
+}
+
+.brand-title:hover {
+  opacity: 0.85;
 }
 
 .brand-subtitle {font-size: 0.85rem;
@@ -184,6 +189,11 @@ font-weight: 600;
   align-items: center;
   margin: var(--space-xl) 0;
 }
+
+.hero--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 
 .hero-text-eyebrow {font-size: 0.8rem;
   letter-spacing: 0.12em;
@@ -257,7 +267,7 @@ font-weight: 600;
   left: -40%;
   width: 40%;
   height: 100%;
-  background: liner-gradient (120deg, rgba(255, 255, 255, 0.22), transparent);
+  background: linear-gradient (120deg, rgba(255, 255, 255, 0.22), transparent);
   transform: skewX(-20deg);
   opacity: 0;
   transition: opacity 0.2s ease-out, transform 0.35s ease-out;
