@@ -213,7 +213,7 @@ text-decoration: none;
 
 .hero-subtitle {font-size: 0.98rem;
   color: var(--color-text-muted);
-  max-width: 32rem;
+  max-width: 48rem;
 }
 
 .hero-meta {display: flex;
