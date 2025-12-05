@@ -522,35 +522,21 @@ textarea {min-height: 5rem;
   filter: grayscale(10%);}
 }
 
-/* Hero Poster Book Exchange Club */
-.hero--poster {display: flex;
+.section--intro {margin-top: 1.5rem;
+}
+
+.intro-layout {display: flex;
+  gap: 2rem;
   justify-content: center;
-  padding: 3rem 1.5rem 1rem;
 }
 
-.hero-poster-wrapper {max-width: 480px;
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ffe3f0, #ffe9cc);
-  padding: 0.75rem;
-  opacity: 0;
-  transform: translateY(24px) scale(0.98);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
-  animation: heroPosterIn 0.9s ease-out forwards;
+.intro-image, .intro-text {width: 320px;
 }
 
-.hero-poster-img {display: block;
-  width: 100%;
-  height: auto;
+.intro-image img {width: 100%;
   border-radius: 16px;
+  display: block;
 }
 
-.hero-poster-wrapper:hover {transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.18);
-  transition: 0.2s ease-out;
-}
-
-@keyframes heroPosterIn {to {opacity: 1;
-    transform: translateY(0) scale(1);}
+.intro-text.card {padding: 1.5rem;
 }

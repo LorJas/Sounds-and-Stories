@@ -31,49 +31,46 @@
         </p>
       </section>
 
-      <!-- Poster -->
-      <section class="hero hero--poster">
-        <div class="hero-poster-wrapper">
-          <img
-            src="img/book-exchange-poster.png"
-            alt="Book Exchange Club Poster"
-            class="hero-poster-img">
-        </div>
-      </section>
+      <section class="section section--intro">
+        <div class="intro-layout">
+          <div class="intro-image">
+            <img src="img/Book_Exchange_Club.png" alt="Book Exchange Club Poster">
+          </div>
 
-      <section class="section">
-        <article class="card">
-          <h2 class="card-title">Über dieses Hobby</h2>
-          <p class="card-text">
-            Bücher haben für mich schon immer eine besondere Bedeutung. Sie erweitern den
-            Horizont, regen zum Nachdenken an und erzählen Geschichten, die man am liebsten
-            weitergeben möchte.
-          </p>
-          <p class="card-text">
-            Deshalb habe ich den Book Exchange Club ins Leben gerufen – eine kleine
-            Plattform, auf der Leser:innen ihre Bücher zum Tausch anbieten können. Das
-            Besondere: Du weisst nicht, welches Buch du im Gegenzug erhältst.
-          </p>
-          <p class="card-text">
-            So entsteht ein nachhaltiger Kreislauf, bei dem Geschichten weiterwandern,
-            neue Entdeckungen gemacht werden und Bücher nicht verstauben. Technisch werden
-            alle Angebote in einer CSV-Datei gespeichert.
-          </p>
-        </article>
+          <article class="intro-text card">
+            <h2 class="card-title">Über dieses Hobby</h2>
+            <p class="card-text">
+              Bücher haben für mich schon immer eine besondere Bedeutung. Sie erweitern den
+              Horizont, regen zum Nachdenken an und erzählen Geschichten, die man am liebsten
+              weitergeben möchte.
+            </p>
+            <p class="card-text">
+              Deshalb habe ich den Book Exchange Club ins Leben gerufen – eine kleine
+              Plattform, auf der Leser:innen ihre Bücher zum Tausch anbieten können.
+            </p>
+            <p class="card-text"> 
+              Das Besondere: Du weisst nicht, welches Buch du im Gegenzug erhältst.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section class="section section--light">
         <h2 class="section-title">So funktioniert der Book Exchange Club</h2>
         <ol class="steps">
           <li>Du trägst ein Buch ein, das du tauschen möchtest.</li>
-          <li>Dein Angebot erscheint in der Übersicht der verfügbaren Bücher.</li>
-          <li>Du erhältst ein Überraschungsbuch aus dem Tauschpool.</li>
+          <li>Dein Buch erscheint als verfügbarer Eintrag im Tauschpool.</li>
+          <li>Du erhältst später ein Überraschungsbuch per E-Mail zugeteilt.</li>
         </ol>
       </section>
 
       <!-- Tabelle -->
       <section class="section">
         <h2 class="section-title">Welche Bücher aktuell im Tauschpool sind</h2>
+        <p class="section-subtitle">
+          In der Übersicht siehst du nur Titel, Genre und Sprache. Weitere Angaben wie Zustand,
+          Standort und Kontakt werden nur intern für die Organisation des Tauschs verwendet.
+        </p>
 
         <div class="table-wrapper">
           <table>
@@ -82,9 +79,6 @@
                 <th>Titel</th>
                 <th>Genre</th>
                 <th>Sprache</th>
-                <th>Zustand</th>
-                <th>Standort</th>
-                <th>Kontakt</th>
               </tr>
             </thead>
             <tbody>
@@ -92,17 +86,11 @@
                 <td>Beispielroman</td>
                 <td>Roman</td>
                 <td>Deutsch</td>
-                <td>Gut</td>
-                <td>Zürich</td>
-                <td>beispiel@mail.ch</td>
               </tr>
               <tr>
                 <td>Sachbuch X</td>
                 <td>Sachbuch</td>
                 <td>Deutsch</td>
-                <td>Wie neu</td>
-                <td>Winterthur</td>
-                <td>kontakt@example.com</td>
               </tr>
             </tbody>
           </table>
@@ -111,7 +99,12 @@
 
       <!-- Formular -->
       <section class="section">
-        <h2 id="be-form-title" class="section-title">Neues Buch zum Tausch anbieten</h2>
+        <h2 id="be-form-title" class="section-title">Dein Buch in den Tauschpool aufnehmen</h2>
+
+        <p class="section-subtitle">
+          Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in der Übersicht
+          der verfügbaren Bücher. Im Gegenzug erhältst du später ein Überraschungsbuch per E-Mail.
+        </p>
 
         <form class="form" method="post" action="cgi-bin/book-exchange.sh">
           <div class="form-row form-row--2">
@@ -188,7 +181,7 @@
           </div>
 
           <p class="section-subtitle">
-            Deine E-Mail-Adresse wird nur für den Büchertausch genutzt.
+            Deine E-Mail-Adresse wird nur verwendet, um dir dein Überraschungsbuch mitzuteilen.
           </p>
 
           <div class="form-row">
