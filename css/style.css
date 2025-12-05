@@ -1,3 +1,8 @@
+/* Projekt: Sounds & Stories: GLIN Semesterarbeit.
+  Cross-Browser geprüft am 05.12.2025: Chrome (Windows), Edge (Windows), Firefox (Windows) Safari Mobile (Apple)
+  Verwendete CSS-Eigenschaften sind laut MDN in allen modernen Browsern unterstützt.
+*/
+
 :root {color-scheme: dark;
   --color-bg: #262938;
   --color-surface: #36394d;
