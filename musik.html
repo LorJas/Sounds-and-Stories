@@ -106,61 +106,65 @@
         </p>
 
         <form class="form" method="post" action="cgi-bin/musik-momente.sh">
-          <div class="form-row form-row--2">
-            <div>
-              <label for="song">Songtitel</label>
-              <input
-                type="text"
-                id="song"
-                name="song"
-                required
-                placeholder="Titel des Songs">
-            </div>
-            <div>
-              <label for="artist">Künstler/in</label>
-              <input
-                type="text"
-                id="artist"
-                name="artist"
-                required
-                placeholder="Name der Künstlerin / des Künstlers">
-            </div>
-          </div>
+  <div class="grid-2 form-columns">
+    <div class="form-column">
+      <div class="form-row">
+        <label for="song">Songtitel</label>
+        <input
+          type="text"
+          id="song"
+          name="song"
+          required
+          placeholder="Titel des Songs">
+      </div>
 
-          <div class="form-row form-row--2">
-            <div>
-              <label for="mood">Stimmung</label>
-              <input
-                type="text"
-                id="mood"
-                name="mood"
-                placeholder="z.B. ruhig, energiegeladen, melancholisch">
-            </div>
-          </div>
+      <div class="form-row">
+        <label for="artist">Künstler/in</label>
+        <input
+          type="text"
+          id="artist"
+          name="artist"
+          required
+          placeholder="Name der Künstlerin / des Künstlers">
+      </div>
+    </div>
 
-          <div class="form-form-row--2">
-            <label for="situation">Situation</label>
-            <input
-              type="text"
-              id="situation"
-              name="situation"
-              placeholder="z.B. Abend zu Hause, unterwegs, gemeinsame Erinnerung">
-          </div>
+    <div class="form-column">
+      <div class="form-row">
+        <label for="mood">Stimmung</label>
+        <input
+          type="text"
+          id="mood"
+          name="mood"
+          placeholder="z.B. ruhig, energiegeladen, melancholisch">
+      </div>
 
-          <div class="form-row">
-            <label for="notes">Notizen</label>
-            <textarea
-              id="notes"
-              name="notes"
-              placeholder="Was verbindest du mit diesem Song? (z.B. Erinnerung, Stimmung, Anlass)"></textarea>
-          </div>
+      <div class="form-row">
+        <label for="situation">Situation</label>
+        <input
+          type="text"
+          id="situation"
+          name="situation"
+          placeholder="z.B. Abend zu Hause, unterwegs, gemeinsame Erinnerung">
+      </div>
+    </div>
+  </div>
 
-          <div class="form-row">
-            <button type="submit" class="btn btn-primary">
-              Musikmoment speichern
-            </button>
-          </div>
-        </form>
+  <div class="form-row">
+    <label for="notes">Notizen</label>
+    <textarea
+      id="notes"
+      name="notes"
+      placeholder="Was verbindest du mit diesem Song? (z.B. Erinnerung, Stimmung, Anlass)"></textarea>
+  </div>
+
+  <div class="form-row">
+    <button type="submit" class="btn btn-primary">
+      Musikmoment speichern
+    </button>
+  </div>
+</form>
+
       </section>
 
       <section class="section" aria-labelledby="media-title">
