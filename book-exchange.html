@@ -27,9 +27,7 @@
     <main class="page">
       <section class="section">
         <h1 id="be-title" class="section-title">Book Exchange Club</h1>
-        <p class="section-subtitle">
-          Bücher tauschen statt stapeln – ein kleiner, nachhaltiger Kreislauf.
-        </p>
+        <p class="section-subtitle"> Bücher tauschen statt stapeln – ein kleiner, nachhaltiger Kreislauf. </p>
       </section>
 
       <section class="section section--intro">
@@ -40,18 +38,9 @@
 
           <article class="intro-text card">
             <h2 class="card-title">Über dieses Hobby</h2>
-            <p class="card-text">
-              Bücher haben für mich schon immer eine besondere Bedeutung. Sie erweitern den
-              Horizont, regen zum Nachdenken an und erzählen Geschichten, die man am liebsten
-              weitergeben möchte.
-            </p>
-            <p class="card-text">
-              Deshalb habe ich den Book Exchange Club ins Leben gerufen – eine kleine
-              Plattform, auf der Leser:innen ihre Bücher zum Tausch anbieten können.
-            </p>
-            <p class="card-text"> 
-              Das Besondere: Du weisst nicht, welches Buch du im Gegenzug erhältst.
-            </p>
+            <p class="card-text"> Bücher haben für mich schon immer eine besondere Bedeutung. Sie erweitern den Horizont, regen zum Nachdenken an und erzählen Geschichten, die man am liebsten weitergeben möchte. </p>
+            <p class="card-text"> Deshalb habe ich den Book Exchange Club ins Leben gerufen – eine kleine Plattform, auf der Leser:innen ihre Bücher zum Tausch anbieten können. </p>
+            <p class="card-text"> Das Besondere: Du weisst nicht, welches Buch du im Gegenzug erhältst. </p>
           </article>
         </div>
       </section>
@@ -65,18 +54,15 @@
         </ol>
       </section>
 
-      <!-- Tabelle -->
       <section class="section">
         <h2 class="section-title">Welche Bücher aktuell im Tauschpool sind</h2>
-        <p class="section-subtitle">
-          In der Übersicht siehst du nur Titel, Genre und Sprache. Weitere Angaben wie Zustand,
-          Adresse und Kontakt werden nur intern für die Organisation des Tauschs verwendet.
-        </p>
-
+        <p class="section-subtitle"> In der Übersicht siehst du beispielhaft einige Bücher im Tauschpool. Interne Angaben wie Zustand, Adresse und Kontakt werden nur für die Organisation des Tauschs verwendet. </p>
+        <!-- Beispiele bis CSV erstellt wird -->
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
+                <th>Autor</th>
                 <th>Titel</th>
                 <th>Genre</th>
                 <th>Sprache</th>
@@ -84,13 +70,33 @@
             </thead>
             <tbody>
               <tr>
-                <td>Beispielroman</td>
-                <td>Roman</td>
+                <td>Carlos Ruiz Zafón</td>
+                <td>Der Schatten des Windes</td>
+                <td>Mystery Roman, Drama, Gothic Fiction</td>
                 <td>Deutsch</td>
               </tr>
               <tr>
-                <td>Sachbuch X</td>
-                <td>Sachbuch</td>
+                <td>Erin Morgenstern</td>
+                <td>The Night Circus</td>
+                <td>Magischer Realismus, Fantasy, Romance</td>
+                <td>Englisch</td>
+              </tr>
+              <tr>
+                <td>Gail Honeyman</td>
+                <td>Eleanor Oliphant Is Completely Fine</td>
+                <td>Contemporary Fiction, psychologischer Roman</td>
+                <td>Englisch</td>
+              </tr>
+              <tr>
+                <td>Haruki Murakami</td>
+                <td>Kafka am Strand</td>
+                <td>Surrealismus, philosophische Fiction, Magical Realism</td>
+                <td>Deutsch</td>
+              </tr>
+              <tr>
+                <td>Justin Cronin</td>
+                <td>Der Übergang</td>
+                <td>Dystopie, Postapokalypse, Horror-Thriller</td>
                 <td>Deutsch</td>
               </tr>
             </tbody>
@@ -101,26 +107,29 @@
       <!-- Formular -->
       <section class="section">
         <h2 id="be-form-title" class="section-title">Dein Buch in den Tauschpool aufnehmen</h2>
-
-        <p class="section-subtitle">
-          Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in der Übersicht
-          der verfügbaren Bücher. Im Gegenzug erhältst du später ein Überraschungsbuch per Post.
-          Deine Adresse wird nur für den Versand verwendet.
-        </p>
-
-        <form class="form" method="post" action="cgi-bin/book-exchange.sh">
+        <p class="section-subtitle"> Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in der Übersicht der verfügbaren Bücher. Im Gegenzug erhältst du später ein Überraschungsbuch per Post. Deine Adresse wird nur für den Versand verwendet. </p>
+        
+        <form class="form" method="post" action="cgi-bin/book-exchange.sh">  
           <div class="form-row form-row--2">
+            <div>
+              <label for="author">Autor</label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                required placeholder="Name des Autors / der Autorin">
+            </div>
             <div>
               <label for="book-title">Buchtitel</label>
               <input
                 type="text"
                 id="book-title"
                 name="book_title"
-                required
-                placeholder="Welches Buch möchtest du in den Tausch schicken?"
-              >
+                required placeholder="Welches Buch möchtest du eintauschen?">
             </div>
+          </div>
 
+          <div class="form-row form-row--2">
             <div>
               <label for="genre">Genre</label>
               <select id="genre" name="genre" required>
@@ -134,9 +143,6 @@
                 <option value="sonstiges">Sonstiges</option>
               </select>
             </div>
-          </div>
-
-          <div class="form-row form-row--2">
             <div>
               <label for="condition">Zustand</label>
               <select id="condition" name="condition" required>
@@ -146,7 +152,9 @@
                 <option value="gebraucht">Gebraucht</option>
               </select>
             </div>
+          </div>
 
+          <div class="form-row form-row--2">
             <div>
               <label for="language">Sprache</label>
               <select id="language" name="language" required>
@@ -158,38 +166,29 @@
                 <option value="andere">Andere</option>
               </select>
             </div>
-          </div>
-
-          <div class="form-row form-row--2">
-            <div>
-              <label for="location">Versandadresse</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                required
-                placeholder="Strasse, Nr., PLZ und Ort">
-            </div>
-
             <div>
               <label for="contact">E-Mail</label>
               <input
                 type="email"
                 id="contact"
                 name="contact"
-                placeholder="Für Rückfragen">
+                required placeholder="Für Rückfragen">
             </div>
           </div>
 
-          <p class="section-subtitle">
-            Deine Adressdaten und deine E-Mail-Adresse werden nur für den Versand
-            und Rückfragen zum Büchertausch genutzt und nicht öffentlich angezeigt.
-          </p>
+          <div class="form-row">
+            <label for="shipping">Versandadresse</label>
+            <input
+              type="text"
+              id="shipping"
+              name="shipping"
+              required placeholder="Strasse, Nr., PLZ und Ort">
+          </div>
+
+          <p class="section-subtitle"> Deine Adressdaten und deine E-Mail-Adresse werden nur für den Versand und Rückfragen zum Büchertausch genutzt und nicht öffentlich angezeigt. </p>
 
           <div class="form-row">
-            <button type="submit" class="btn btn-primary">
-              Buch zum Tausch freigeben
-            </button>
+            <button type="submit" class="btn btn-primary"> Buch zum Tausch freigeben </button>
           </div>
         </form>
       </section>
@@ -197,9 +196,7 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <div>
-          &copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories · Book Exchange Club
-        </div>
+        <div> &copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories · Book Exchange Club </div>
         <a href="mailto:loresa.jasari@fhgr.stud.ch">loresa.jasari@fhgr.stud.ch</a>
       </div>
     </footer>
