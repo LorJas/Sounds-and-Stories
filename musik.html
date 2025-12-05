@@ -34,15 +34,21 @@
           <h2 class="card-title">Über mein Hobby</h2>
           <p class="card-text">
             Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht,
-            um perfekt zu sein – eher, um den Kopf freizubekommen. Früher habe
-            ich regelmässig gespielt und sogar darüber nachgedacht, einen
-            Musik-Blog zu starten.
+            um perfekt zu sein – eher, um den Kopf freizubekommen und kurz
+            abzuschalten. Früher habe ich regelmässig gespielt und manchmal
+            sogar darüber nachgedacht, einen Musik-Blog zu starten.
           </p>
           <p class="card-text">
-            Heute spiele ich vor allem für mich: abends, wenn es ruhig wird,
-            oder wenn ich einfach etwas Abstand brauche. Trotzdem gibt es einen
-            kleinen Traum: ein Konzert geben – ohne Druck, nur aus Freude an der
-            Musik.
+            Heute spiele ich vor allem für mich – abends, wenn es ruhig wird,
+            oder wenn ich einfach etwas Abstand brauche. Aus diesen Momenten ist
+            die Idee entstanden, einen kleinen Wohnzimmer-Konzertabend zu
+            machen, bei dem ihr mir Songs vorschlagen könnt, die ich für euch
+            spiele.
+          </p>
+          <p class="card-text">
+            Auf dieser Seite sammle ich solche Musikmomente und Songwünsche. Die
+            Tabelle und das Formular unten sind sozusagen die Setlist für diesen
+            Abend – mit euren Geschichten, Stimmungen und Liedern.
           </p>
         </article>
       </section>
@@ -51,6 +57,12 @@
         <div class="section-header">
           <h2 id="musik-table-title" class="section-title">Meine Musikmomente</h2>
         </div>
+
+        <p class="card-text">
+          Hier halte ich fest, welche Songs ich für den Wohnzimmer-Abend
+          spielen soll, in welcher Stimmung sie zu dir passen und in welcher
+          Situation du sie dir gewünscht hast.
+        </p>
 
         <div class="table-wrapper">
           <table>
@@ -88,8 +100,15 @@
 
       <section class="section" aria-labelledby="musik-form-title">
         <div class="section-header">
-          <h2 id="musik-form-title" class="section-title">Neuen Musikmoment erfassen</h2>
+          <h2 id="musik-form-title" class="section-title">Neuen Songwunsch erfassen</h2>
         </div>
+
+        <p class="card-text">
+          Wenn du möchtest, dass ein bestimmter Song Teil des kleinen
+          Wohnzimmer-Konzerts wird, kannst du ihn hier eintragen. Je mehr du
+          über Stimmung und Situation erzählst, desto besser kann ich den
+          Abend auf euch anpassen.
+        </p>
 
         <form class="form" method="post" action="cgi-bin/musik-momente.sh">
           <div class="form-row form-row--2">
@@ -138,7 +157,7 @@
               type="text"
               id="situation"
               name="situation"
-              placeholder="z.B. Abend zu Hause, unterwegs, Pause im Studium">
+              placeholder="z.B. Abend zu Hause, unterwegs, gemeinsame Erinnerung">
           </div>
 
           <div class="form-row">
@@ -146,7 +165,7 @@
             <textarea
               id="notes"
               name="notes"
-              placeholder="Was hat dieser Moment für dich bedeutet?"></textarea>
+              placeholder="Was verbindest du mit diesem Song? (z.B. Erinnerung, Stimmung, Anlass)"></textarea>
           </div>
 
           <div class="form-row">
