@@ -1,6 +1,6 @@
 # Sounds & Stories – Semesterarbeit
 
-Dieses Projekt enthält eine statische Website (HTML/CSS) sowie serverseitige Datenverarbeitung über CGI (Bash).
+Unser GLIN-Projekt enthält eine statische Website (HTML/CSS) sowie serverseitige Datenverarbeitung über CGI (Bash).
 
 ## Funktionen
 - Musikmomente: Formular -> CGI -> Speicherung in `data/musikmomente.xml`
