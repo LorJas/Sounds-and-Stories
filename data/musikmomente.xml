@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Musikmomente>
+  <Titel>Songwünsche für den Wohnzimmer-Konzertabend</Titel>
+
+  <Musikmoment>
+    <Song>Midnight City</Song>
+    <Kuenstler>M83</Kuenstler>
+    <Stimmung>energiegeladen</Stimmung>
+    <Situation>Abendspaziergang</Situation>
+    <Notizen>Passt perfekt zu City-Lights.</Notizen>
+  </Musikmoment>
+
+  <Musikmoment>
+    <Song>Someone Like You</Song>
+    <Kuenstler>Adele</Kuenstler>
+    <Stimmung>melancholisch</Stimmung>
+    <Situation>ruhiger Abend</Situation>
+    <Notizen>Für entspannte Momente.</Notizen>
+  </Musikmoment>
+</Musikmomente>
