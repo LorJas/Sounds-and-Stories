@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# CGI: Speichert Book-Exchange Einträge aus einem HTML-Formular in eine CSV-Datei.
+# CGI-Skript: Nimmt Formulardaten (POST) entgegen und speichert sie als neuen Eintrag in einer CSV-Datei.
+# Zweck: Persistente Speicherung von Buchangeboten und spätere Darstellung über ein separates CGI-Skript.
 
 set -euo pipefail
 
+# URL-Decoding für application/x-www-form-urlencoded
 urldecode() {
   local data="${1//+/ }"
   printf '%b' "${data//%/\\x}"
 }
 
+# Extrahiert ein Feld aus dem POST-Body anhand des Keys (name-Attribut im HTML-Formular)
 get_field() {
   local key="$1"
   local raw
@@ -15,20 +18,23 @@ get_field() {
   urldecode "${raw:-}"
 }
 
-# CSV-Quoting (Anführungszeichen verdoppeln)
+# CSV-Quoting:
+# - Doppelte Anführungszeichen werden verdoppelt
+# - Das Feld wird in "..." eingeschlossen
 csv_escape() {
   local s="$1"
   s="${s//\"/\"\"}"
   printf '"%s"' "$s"
 }
 
+# --- POST-Body lesen
 CONTENT_LENGTH="${CONTENT_LENGTH:-0}"
 BODY=""
 if [[ "${REQUEST_METHOD:-}" == "POST" && "$CONTENT_LENGTH" -gt 0 ]]; then
   IFS= read -r -n "$CONTENT_LENGTH" BODY || true
 fi
 
-# Name-Attribute müssen zu euren Form-Inputs passen
+# --- Felder aus dem Formular (müssen zu den name="..." Attributen passen)
 author="$(get_field "author")"
 title="$(get_field "book_title")"
 genre="$(get_field "genre")"
@@ -37,14 +43,16 @@ language="$(get_field "language")"
 contact="$(get_field "contact")"
 shipping="$(get_field "shipping")"
 
+# --- Pfade
 DATA_DIR="$(cd "$(dirname "$0")/../data" && pwd)"
 CSV_FILE="$DATA_DIR/book-exchange.csv"
 
-# Header, falls Datei nicht existiert
+# --- Falls CSV nicht existiert, Headerzeile anlegen (sprechenede Spaltennamen)
 if [[ ! -f "$CSV_FILE" ]]; then
   printf "Autor,Titel,Genre,Zustand,Sprache,E-Mail,Versandadresse\n" > "$CSV_FILE"
 fi
 
+# --- Neuen Datensatz ans Ende anhängen
 printf "%s,%s,%s,%s,%s,%s,%s\n" \
   "$(csv_escape "$author")" \
   "$(csv_escape "$title")" \
@@ -55,6 +63,7 @@ printf "%s,%s,%s,%s,%s,%s,%s\n" \
   "$(csv_escape "$shipping")" \
   >> "$CSV_FILE"
 
+# --- HTML-Response
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 cat <<HTML
 <!doctype html>

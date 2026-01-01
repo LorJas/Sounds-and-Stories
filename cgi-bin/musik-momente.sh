@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# CGI: Speichert Musikmomente aus einem HTML-Formular in eine XML-Datei.
+# CGI-Skript: Nimmt Formulardaten (POST) entgegen und speichert sie als neuen Eintrag in einer XML-Datei.
+# Zweck: Persistente Speicherung von Musikmomenten und spätere Darstellung über ein separates CGI-Skript.
 
 set -euo pipefail
 
-# --- URL-Decoding (application/x-www-form-urlencoded)
+# URL-Decoding für application/x-www-form-urlencoded:
+# - "+" wird zu Leerzeichen
+# - "%xx" wird zu den entsprechenden Zeichen
 urldecode() {
   local data="${1//+/ }"
   printf '%b' "${data//%/\\x}"
 }
 
-# --- Feld aus POST-Body holen
+# Extrahiert ein Feld aus dem POST-Body anhand des Keys (name-Attribut im HTML-Formular)
 get_field() {
   local key="$1"
   local raw
@@ -17,7 +20,7 @@ get_field() {
   urldecode "${raw:-}"
 }
 
-# --- Minimal XML escaping
+# Minimales XML-Escaping, damit Sonderzeichen in XML gültig bleiben
 xml_escape() {
   local s="$1"
   s="${s//&/&amp;}"
@@ -28,31 +31,32 @@ xml_escape() {
   printf '%s' "$s"
 }
 
-# --- POST body lesen
+# --- POST-Body lesen (bei GET ist BODY leer)
 CONTENT_LENGTH="${CONTENT_LENGTH:-0}"
 BODY=""
 if [[ "${REQUEST_METHOD:-}" == "POST" && "$CONTENT_LENGTH" -gt 0 ]]; then
   IFS= read -r -n "$CONTENT_LENGTH" BODY || true
 fi
 
-# --- Felder (Name-Attribute müssen zu euren Form-Inputs passen)
+# --- Felder aus dem Formular (müssen zu den name="..." Attributen passen)
 song="$(get_field "song")"
 artist="$(get_field "artist")"
 mood="$(get_field "mood")"
 situation="$(get_field "situation")"
 notes="$(get_field "notes")"
 
+# Sonderzeichen für XML absichern
 song="$(xml_escape "$song")"
 artist="$(xml_escape "$artist")"
 mood="$(xml_escape "$mood")"
 situation="$(xml_escape "$situation")"
 notes="$(xml_escape "$notes")"
 
-# --- Pfade
+# --- Pfade (data/ liegt eine Ebene über cgi-bin/)
 DATA_DIR="$(cd "$(dirname "$0")/../data" && pwd)"
 XML_FILE="$DATA_DIR/musikmomente.xml"
 
-# --- XML initialisieren, falls Datei noch nicht existiert
+# --- Falls XML-Datei noch nicht existiert, Initialstruktur erzeugen
 if [[ ! -f "$XML_FILE" ]]; then
   cat > "$XML_FILE" <<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,7 +66,8 @@ if [[ ! -f "$XML_FILE" ]]; then
 XML
 fi
 
-# --- Eintrag vor </Musikmomente> einfügen
+# --- Neuen <Musikmoment>-Block vor dem schliessenden Root-Tag einfügen
+# Lösung mit awk: zuverlässig für unsere kontrollierte XML-Struktur.
 tmp="$(mktemp)"
 awk -v song="$song" -v artist="$artist" -v mood="$mood" -v situation="$situation" -v notes="$notes" '
 /<\/Musikmomente>/{
@@ -78,7 +83,7 @@ awk -v song="$song" -v artist="$artist" -v mood="$mood" -v situation="$situation
 ' "$XML_FILE" > "$tmp"
 mv "$tmp" "$XML_FILE"
 
-# --- HTML Response
+# --- HTML-Response (Navigation zurück zum Formular oder zur Liste)
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 cat <<HTML
 <!doctype html>
