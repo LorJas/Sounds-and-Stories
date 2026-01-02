@@ -190,3 +190,7 @@ cat <<HTML
 </body>
 </html>
 HTML
+# --- Redirect zurück zur normalen HTML-Seite
+printf "Status: 303 See Other\r\n"
+printf "Location: ../book-exchange.html?saved=1\r\n\r\n"
+exit 0

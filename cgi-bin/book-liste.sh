@@ -2,6 +2,8 @@
 set -euo pipefail
 
 CSV_FILE="/var/www/html/Sounds-and-Stories/data/book-exchange.csv"
+DATA_DIR="/var/www/html/Sounds-and-Stories/data"
+CSV_FILE="$DATA_DIR/book-exchange.csv"
 
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 
@@ -122,6 +124,76 @@ cat <<'HTML'
       </p>
     </section>
   </main>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    a { display:inline-block; margin-bottom: 12px; }
+    table { border-collapse: collapse; width: 100%; max-width: 1100px; }
+    th, td { border: 1px solid #ddd; padding: 10px; vertical-align: top; }
+    th { text-align: left; background: #f6f6f6; }
+    tr:nth-child(even) td { background: #fafafa; }
+  </style>
+</head>
+<body>
+  <h1>📚 Book Exchange</h1>
+  <a href="../book-exchange.html">Zurück zum Formular</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Autor</th>
+        <th>Titel</th>
+        <th>Genre</th>
+        <th>Zustand</th>
+        <th>Sprache</th>
+        <th>E-Mail</th>
+        <th>Versandadresse</th>
+      </tr>
+    </thead>
+    <tbody>
+HTML
+
+# CSV robust lesen (mit Python csv-Modul -> kann Quotes + Kommas korrekt)
+python3 - <<PY
+import csv, html, os, sys
+
+path = "$CSV_FILE"
+if not os.path.exists(path):
+    print('<tr><td colspan="7">Keine CSV-Datei gefunden.</td></tr>')
+    sys.exit(0)
+
+with open(path, newline='', encoding='utf-8') as f:
+    r = csv.reader(f)
+    # Header überspringen
+    try:
+        next(r)
+    except StopIteration:
+        print('<tr><td colspan="7">CSV ist leer.</td></tr>')
+        sys.exit(0)
+
+    any_row = False
+    for row in r:
+        if not row:
+            continue
+        any_row = True
+
+        # Falls jemand Kommas/Quotes drin hat, csv.reader handled das korrekt.
+        # Wir erwarten 7 Felder. Wenn mehr/weniger -> zusammenfassen/auffüllen.
+        if len(row) < 7:
+            row = row + [""]*(7-len(row))
+        elif len(row) > 7:
+            # alles ab Feld 7 in die Adresse packen
+            row = row[:6] + [",".join(row[6:])]
+
+        row = [html.escape(x) for x in row]
+        print("<tr>" + "".join(f"<td>{x}</td>" for x in row) + "</tr>")
+
+    if not any_row:
+        print('<tr><td colspan="7">Noch keine Einträge vorhanden.</td></tr>')
+PY
+
+cat <<'HTML'
+    </tbody>
+  </table>
 </body>
 </html>
 HTML
