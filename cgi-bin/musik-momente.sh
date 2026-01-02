@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 # CGI-Skript: Nimmt Formulardaten (POST) entgegen und speichert sie als neuen Eintrag in einer XML-Datei.
-# Zweck: Persistente Speicherung von Musikmomenten und spätere Darstellung über ein separates CGI-Skript.
+# Redirect danach zurück auf ../musik.html#saved
 
 set -euo pipefail
 
-# URL-Decoding für application/x-www-form-urlencoded:
-# - "+" wird zu Leerzeichen
-# - "%xx" wird zu den entsprechenden Zeichen
+# URL-Decoding (application/x-www-form-urlencoded)
 urldecode() {
   local data="${1//+/ }"
   printf '%b' "${data//%/\\x}"
 }
 
-# Extrahiert ein Feld aus dem POST-Body anhand des Keys (name-Attribut im HTML-Formular)
+# Feld aus POST-Body anhand Key (name="...") extrahieren
 get_field() {
   local key="$1"
   local raw
@@ -20,7 +18,7 @@ get_field() {
   urldecode "${raw:-}"
 }
 
-# Minimales XML-Escaping, damit Sonderzeichen in XML gültig bleiben
+# XML-Escaping (Minimalset)
 xml_escape() {
   local s="$1"
   s="${s//&/&amp;}"
@@ -31,32 +29,33 @@ xml_escape() {
   printf '%s' "$s"
 }
 
-# --- POST-Body lesen (bei GET ist BODY leer)
+# POST-Body lesen
 CONTENT_LENGTH="${CONTENT_LENGTH:-0}"
 BODY=""
+
 if [[ "${REQUEST_METHOD:-}" == "POST" && "$CONTENT_LENGTH" -gt 0 ]]; then
   IFS= read -r -n "$CONTENT_LENGTH" BODY || true
 fi
 
-# --- Felder aus dem Formular (müssen zu den name="..." Attributen passen)
+# Felder (müssen zu name="..." in musik.html passen)
 song="$(get_field "song")"
 artist="$(get_field "artist")"
 mood="$(get_field "mood")"
 situation="$(get_field "situation")"
 notes="$(get_field "notes")"
 
-# Sonderzeichen für XML absichern
 song="$(xml_escape "$song")"
 artist="$(xml_escape "$artist")"
 mood="$(xml_escape "$mood")"
 situation="$(xml_escape "$situation")"
 notes="$(xml_escape "$notes")"
 
-# --- Pfade (data/ liegt eine Ebene über cgi-bin/)
-DATA_DIR="$(cd "$(dirname "$0")/../data" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DATA_DIR="$(cd "$SCRIPT_DIR/../data" && pwd)"
 XML_FILE="$DATA_DIR/musikmomente.xml"
 
-# --- Falls XML-Datei noch nicht existiert, Initialstruktur erzeugen
+TMP_FILE="$(mktemp "$DATA_DIR/.musikmomente.xml.XXXXXX")"
+
 if [[ ! -f "$XML_FILE" ]]; then
   cat > "$XML_FILE" <<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -66,24 +65,27 @@ if [[ ! -f "$XML_FILE" ]]; then
 XML
 fi
 
-# --- Neuen <Musikmoment>-Block vor dem schliessenden Root-Tag einfügen
-# Lösung mit awk: zuverlässig für unsere kontrollierte XML-Struktur.
-tmp="$(mktemp)"
 awk -v song="$song" -v artist="$artist" -v mood="$mood" -v situation="$situation" -v notes="$notes" '
-/<\/Musikmomente>/{
-  print "  <Musikmoment>"
-  print "    <Song>" song "</Song>"
-  print "    <Kuenstler>" artist "</Kuenstler>"
-  print "    <Stimmung>" mood "</Stimmung>"
-  print "    <Situation>" situation "</Situation>"
-  print "    <Notizen>" notes "</Notizen>"
-  print "  </Musikmoment>"
+BEGIN { inserted=0 }
+{
+  # Beim schliessenden Root-Tag: vorher neuen Block einfügen (nur 1x)
+  if ($0 ~ /<\/Musikmomente>/ && inserted==0) {
+    print "  <Musikmoment>"
+    print "    <Song>" song "</Song>"
+    print "    <Kuenstler>" artist "</Kuenstler>"
+    print "    <Stimmung>" mood "</Stimmung>"
+    print "    <Situation>" situation "</Situation>"
+    print "    <Notizen>" notes "</Notizen>"
+    print "  </Musikmoment>"
+    inserted=1
+  }
+  print $0
 }
-{ print }
-' "$XML_FILE" > "$tmp"
-mv "$tmp" "$XML_FILE"
+' "$XML_FILE" > "$TMP_FILE"
 
-# --- Redirect zurück zur normalen HTML-Seite
+mv -f "$TMP_FILE" "$XML_FILE"
+
+# Redirect zurück zur normalen HTML-Seite mit Anchor #saved
 printf "Status: 303 See Other\r\n"
 printf "Location: ../musik.html#saved\r\n\r\n"
 exit 0
