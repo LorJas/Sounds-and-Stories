@@ -85,5 +85,5 @@ mv "$tmp" "$XML_FILE"
 
 # --- Redirect zurück zur normalen HTML-Seite
 printf "Status: 303 See Other\r\n"
-printf "Location: ../musik.html?saved=1\r\n\r\n"
+printf "Location: ../musik.html#saved\r\n\r\n"
 exit 0
