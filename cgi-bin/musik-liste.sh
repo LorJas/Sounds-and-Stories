@@ -40,64 +40,60 @@ if [[ ! -f "$XML_FILE" ]]; then
   exit 0
 fi
 
-gawk -v file="$XML_FILE" '
-function esc(s,    t){
-  t=s
+awk -v file="$XML_FILE" '
+BEGIN {
+  # Ganze Datei in Records splitten: jeder Musikmoment ist 1 Record
+  RS = "<Musikmoment>"
+  FS = "\n"
+}
+function esc(s, t) {
+  t = s
   gsub(/&/, "\\&amp;", t)
   gsub(/</, "\\&lt;", t)
   gsub(/>/, "\\&gt;", t)
   gsub(/"/, "\\&quot;", t)
   return t
 }
-function tag(block, name,    re, m){
+function gettag(rec, name,   re, m) {
   re = "<" name ">[^<]*</" name ">"
-  if (match(block, re)) {
-    m = substr(block, RSTART, RLENGTH)
+  if (match(rec, re)) {
+    m = substr(rec, RSTART, RLENGTH)
     sub("^<" name ">", "", m)
     sub("</" name ">$", "", m)
     return m
   }
   return ""
 }
-BEGIN{
-  xml=""
-  while ((getline line < file) > 0) xml = xml line "\n"
+BEGINFILE { }
+{
+  # Skip root header-Teil (vor em erste Musikmoment)
+  if (NR == 1) next
 
-  print "<div class=\"table-wrap\">"
-  print "<table class=\"data-table\">"
-  print "<thead><tr><th>Song</th><th>Künstler/in</th><th>Stimmung</th><th>Situation</th><th>Notizen</th></tr></thead><tbody>"
+  song = gettag($0, "Song")
+  art  = gettag($0, "Kuenstler")
+  mood = gettag($0, "Stimmung")
+  sit  = gettag($0, "Situation")
+  note = gettag($0, "Notizen")
 
-  n = split(xml, parts, "<Musikmoment>")
-  count=0
-  for (i=2; i<=n; i++){
-    block = parts[i]
-    sub("</Musikmoment>.*$", "", block)
-
-    song = tag(block, "Song")
-    kuen = tag(block, "Kuenstler")
-    stim = tag(block, "Stimmung")
-    sit  = tag(block, "Situation")
-    not  = tag(block, "Notizen")
-
-    if (song=="" && kuen=="" && stim=="" && sit=="" && not=="") continue
-
-    print "<tr>"
-    print "<td>" esc(song) "</td>"
-    print "<td>" esc(kuen) "</td>"
-    print "<td>" esc(stim) "</td>"
-    print "<td>" esc(sit) "</td>"
-    print "<td>" esc(not) "</td>"
-    print "</tr>"
+  # nur wenn mind. Song oder Künstler drin isch
+  if (song != "" || art != "") {
+    if (count == 0) {
+      print "<div class=\"table-wrap\">"
+      print "<table class=\"data-table\">"
+      print "<thead><tr><th>Song</th><th>Künstler/in</th><th>Stimmung</th><th>Situation</th><th>Notizen</th></tr></thead><tbody>"
+    }
+    print "<tr><td>" esc(song) "</td><td>" esc(art) "</td><td>" esc(mood) "</td><td>" esc(sit) "</td><td>" esc(note) "</td></tr>"
     count++
   }
-
-  if (count==0){
-    print "<tr><td colspan=\"5\"><i>Keine Einträge gefunden.</i></td></tr>"
-  }
-
-  print "</tbody></table></div>"
 }
-' 2>/dev/null
+ENDFILE {
+  if (count == 0) {
+    print "<p><i>Keine Einträge gefunden.</i></p>"
+  } else {
+    print "</tbody></table></div>"
+  }
+}
+' "$XML_FILE"
 
 cat <<'HTML'
         </div>
