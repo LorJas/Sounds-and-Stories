@@ -28,26 +28,36 @@ HTML
 # CSV lesen
 IFS= read -r header_line || true
 
+# Windows-Zeilenenden entfernen (CR/LF)
 header_line="${header_line//$'\r'/}"
-header_line="${header_line//$'\t'/}"
-
 header_line="${header_line//$'\n'/}"
 
+# Header in Spalten aufteilen
 IFS=',' read -r -a header_cols <<< "$header_line"
 
-  while IFS=',' read -r autor titel genre zustand sprache email plz ort; do
-    echo "<tr>"
-    echo "<td>$autor</td>"
-    echo "<td>$titel</td>"
-    echo "<td>$genre</td>"
-    echo "<td>$zustand</td>"
-    echo "<td>$sprache</td>"
-    echo "<td>$email</td>"
-    echo "<td>$plz</td>"
-    echo "<td>$ort</td>"
-    echo "</tr>"
-  done
-} < "$CSV"
+# THEAD ausgeben
+echo "<thead>"
+echo "<tr>"
+for col in "${header_cols[@]}"; do
+  echo "<th>$col</th>"
+done
+echo "</tr>"
+echo "</thead>"
+
+# TBODY ausgeben
+echo "<tbody>"
+while IFS=',' read -r autor titel genre zustand sprache email adresse; do
+  echo "<tr>"
+  echo "<td>$autor</td>"
+  echo "<td>$titel</td>"
+  echo "<td>$genre</td>"
+  echo "<td>$zustand</td>"
+  echo "<td>$sprache</td>"
+  echo "<td>$email</td>"
+  echo "<td>$adresse</td>"
+  echo "</tr>"
+done
+echo "</tbody>"
 
 cat <<HTML
 </table>
