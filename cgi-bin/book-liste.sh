@@ -1,107 +1,127 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Pfad zur CSV
-csv="/var/www/html/Sounds-and-Stories/data/book-exchange.csv"
+CSV_FILE="/var/www/html/Sounds-and-Stories/data/book-exchange.csv"
 
-# HTTP Header
-printf "Content-Type: text/html\r\n\r\n"
+printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 
 cat <<'HTML'
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Book Exchange – Übersicht</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-    th { background: #f2f2f2; }
-    a { color: #0a66c2; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1100px; margin: 0 auto; }
-  </style>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<div class="wrap">
-  <h1>📚 Book Exchange</h1>
-  <p><a href="../book-exchange.html">Zurück zum Formular</a></p>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a href="../index.html" class="brand-title">Sounds &amp; Stories</a>
+      </div>
+    </div>
+  </header>
 
-  <table>
+  <main class="container">
+    <section class="section">
+      <div class="section-header">
+        <h1 class="section-title">📚 Aktuelle Buchangebote</h1>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
 HTML
 
-# --- CSV lesen & Tabelle generieren ---
-
-if [[ ! -f "$csv" ]]; then
-  echo "<p><b>Fehler:</b> CSV-Datei nicht gefunden: $csv</p>"
-  echo "</div></body></html>"
+if [[ ! -f "$CSV_FILE" ]]; then
+  echo "<p><b>Fehler:</b> CSV-Datei nicht gefunden: ${CSV_FILE}</p>"
+  echo "        </div></div></section></main></body></html>"
   exit 0
 fi
 
-# Header-Zeile lesen + CRLF entfernen
-IFS= read -r header_line < "$csv" || true
-header_line=${header_line//$'\r'/}
+# Robust CSV parsing (quoted fields + delimiter , oder ;)
+gawk -v file="$CSV_FILE" '
+function html_escape(s,    t) {
+  t = s
+  gsub(/&/, "\\&amp;", t)
+  gsub(/</, "\\&lt;", t)
+  gsub(/>/, "\\&gt;", t)
+  gsub(/"/, "\\&quot;", t)
+  return t
+}
 
-# Falls Datei leer ist
-if [[ -z "${header_line:-}" ]]; then
-  echo "<p><b>Hinweis:</b> Die CSV-Datei ist leer.</p>"
-  echo "</div></body></html>"
-  exit 0
-fi
+# CSV split mit Quotes: unterstützt Kommas/Delimiter innerhalb von ""
+function csv_split(line, arr, delim,    i, c, inq, field, n) {
+  n = 0; field = ""; inq = 0
+  for (i = 1; i <= length(line); i++) {
+    c = substr(line, i, 1)
+    if (c == "\"") {
+      # "" داخل quotes = escaped quote
+      if (inq && substr(line, i+1, 1) == "\"") { field = field "\""; i++ }
+      else { inq = !inq }
+    } else if (!inq && c == delim) {
+      arr[++n] = field
+      field = ""
+    } else {
+      field = field c
+    }
+  }
+  arr[++n] = field
+  return n
+}
 
-# Delimiter automatisch erkennen
-delim=","
-if [[ "$header_line" == *";"* ]]; then
-  delim=";"
-fi
+BEGIN {
+  # Delimiter automatisch erkennen anhand Header
+  if ((getline header < file) <= 0) {
+    print "<p><b>Hinweis:</b> Die CSV-Datei ist leer.</p>"
+    exit
+  }
+  sub(/\r$/, "", header)
 
-# Header aufteilen
-IFS="$delim" read -r -a header_cols <<< "$header_line"
+  delim = ","
+  if (index(header, ";") > 0) delim = ";"
 
-# THEAD ausgeben
-echo "<thead>"
-echo "<tr>"
-for col in "${header_cols[@]}"; do
-  # kleine HTML-Sicherheit (minimale Escapes)
-  col=${col//&/&amp;}
-  col=${col//</&lt;}
-  col=${col//>/&gt;}
-  echo "<th>${col}</th>"
-done
-echo "</tr>"
-echo "</thead>"
+  hn = csv_split(header, h, delim)
 
-# TBODY ausgeben
-echo "<tbody>"
+  print "<div class=\"table-wrap\">"
+  print "<table class=\"data-table\">"
+  print "<thead><tr>"
+  for (i=1; i<=hn; i++) print "<th>" html_escape(h[i]) "</th>"
+  print "</tr></thead><tbody>"
 
-# Ab Zeile 2 (ohne Header) lesen
-tail -n +2 "$csv" | while IFS= read -r line; do
-  # leere Zeilen skippen
-  [[ -z "$line" ]] && continue
+  rowcount = 0
+  while ((getline line < file) > 0) {
+    sub(/\r$/, "", line)
+    if (line ~ /^[[:space:]]*$/) continue
 
-  # CRLF entfernen
-  line=${line//$'\r'/}
+    rn = csv_split(line, r, delim)
 
-  # Zeile in Spalten splitten
-  IFS="$delim" read -r -a cols <<< "$line"
+    print "<tr>"
+    for (i=1; i<=hn; i++) {
+      val = (i<=rn ? r[i] : "")
+      print "<td>" html_escape(val) "</td>"
+    }
+    print "</tr>"
+    rowcount++
+  }
 
-  echo "<tr>"
-  for cell in "${cols[@]}"; do
-    # minimale HTML-Escapes
-    cell=${cell//&/&amp;}
-    cell=${cell//</&lt;}
-    cell=${cell//>/&gt;}
-    echo "<td>${cell}</td>"
-  done
-  echo "</tr>"
-done
+  if (rowcount == 0) {
+    print "<tr><td colspan=\"" hn "\"><i>Keine Einträge vorhanden.</i></td></tr>"
+  }
 
-echo "</tbody>"
+  print "</tbody></table></div>"
+}
+' 2>/dev/null
 
 cat <<'HTML'
-  </table>
-</div>
+        </div>
+      </div>
+
+      <p class="list-link" style="margin-top:1rem;">
+        <a href="../book-exchange.html">← zurück zum Formular</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>
 HTML
