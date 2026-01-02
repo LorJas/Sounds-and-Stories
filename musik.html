@@ -55,13 +55,26 @@
       <section class="section" aria-labelledby="musik-table-title">
         <div class="section-header">
           <h2 id="musik-table-title" class="section-title">Meine Musikmomente</h2>
+          <div id="save-hint" class="card-text" style="display:none;">
+            ✅ Dein Musikmoment wurde gespeichert.
+            <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">
+              Musikmomente anzeigen
+            </a>
+          </div>
+          
+          <script>
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("saved") === "1") {
+              document.getElementById("save-hint").style.display = "block";
+            }
+          </script>  
         </div>
-
+      
         <p class="card-text">
            Hier findest du eine Auswahl von Songvorschlägen, die andere bereits eingereicht 
            haben – und die ich beim Wohnzimmer-Abend ganz sicher spielen werde.
         </p>
-
+      
         <div class="table-wrapper">
           <table>
              <thead>
@@ -71,25 +84,25 @@
                 <th>Stimmung</th>
                 <th>Situation</th>
               </tr>
-    </thead>
-
-    <tbody>
-  <tr>
-    <td>Above and Below</td>
-    <td>The Bravery</td>
-    <td>intensiv, treibend</td>
-    <td>spontaner Abendspaziergang, Kopfhörer auf</td>
-  </tr>
-  <tr>
-    <td>September Rain</td>
-    <td>Cassyette</td>
-    <td>melancholisch, emotional</td>
-    <td>alleine zuhause, Gedanken sortieren</td>
-  </tr>
-</tbody>
-
-  </table>
-</div>
+             </thead>
+             
+             <tbody>
+              <tr>
+                <td>Above and Below</td>
+                <td>The Bravery</td>
+                <td>intensiv, treibend</td>
+                <td>spontaner Abendspaziergang, Kopfhörer auf</td>
+              </tr>
+              <tr>
+                <td>September Rain</td>
+                <td>Cassyette</td>
+                <td>melancholisch, emotional</td>
+                <td>alleine zuhause, Gedanken sortieren</td>
+              </tr>
+             </tbody>
+          
+          </table>
+        </div>
       </section>
 
       <section class="section" aria-labelledby="musik-form-title">
