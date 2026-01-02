@@ -26,13 +26,14 @@ cat <<HTML
 HTML
 
 # CSV lesen
-{
-  IFS=',' read -r header
-  echo "<tr>"
-  for col in $header; do
-    echo "<th>$col</th>"
-  done
-  echo "</tr>"
+IFS= read -r header_line || true
+
+header_line="${header_line//$'\r'/}"
+header_line="${header_line//$'\t'/}"
+
+header_line="${header_line//$'\n'/}"
+
+IFS=',' read -r -a header_cols <<< "$header_line"
 
   while IFS=',' read -r autor titel genre zustand sprache email plz ort; do
     echo "<tr>"
