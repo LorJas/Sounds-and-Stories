@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-XML_FILE="/var/www/html/Sounds-and-Stories/data/musikmomente.xml"
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+XML_FILE="$BASE_DIR/data/musikmomente.xml"
 
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 
