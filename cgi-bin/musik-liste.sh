@@ -11,7 +11,7 @@ cat <<'HTML'
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Musikmomente – Übersicht</title>
+  <title>Gespeicherte Musikmomente</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -20,13 +20,20 @@ cat <<'HTML'
       <div class="brand">
         <a href="../index.html" class="brand-title">Sounds &amp; Stories</a>
       </div>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="../book-exchange.html" class="nav-link">Book Exchange</a></li>
+          <li><a href="../musik.html" class="nav-link nav-link--active">Musik als Ruhepunkt</a></li>
+          <li><a href="../impressum.html" class="nav-link">Impressum</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
   <main class="container">
     <section class="section">
       <div class="section-header">
-        <h1 class="section-title">🎵 Gespeicherte Musikmomente</h1>
+        <h1 class="section-title">Gespeicherte Musikmomente</h1>
       </div>
 
       <div class="card">
@@ -39,7 +46,6 @@ if [[ ! -f "$XML_FILE" ]]; then
   exit 0
 fi
 
-# Einfaches XML-Parsing (für eure fixe Struktur)
 gawk -v file="$XML_FILE" '
 function html_escape(s,    t) {
   t = s
@@ -49,52 +55,118 @@ function html_escape(s,    t) {
   gsub(/"/, "\\&quot;", t)
   return t
 }
-function gettag(block, tag,    re, m) {
-  re = "<" tag ">[^<]*</" tag ">"
-  if (match(block, re)) {
-    m = substr(block, RSTART, RLENGTH)
-    gsub("^<" tag ">", "", m)
-    gsub("</" tag ">$", "", m)
+
+# tag aus block holen, case-insensitive, inkl. umlaut-tags
+function gettag_ci(block, tag,    b, t, re, m) {
+  b = block
+  t = tag
+  re = "<[[:space:]]*" t "[[:space:]]*>[^<]*</[[:space:]]*" t "[[:space:]]*>"
+  if (match(b, re)) {
+    m = substr(b, RSTART, RLENGTH)
+    sub("^<[[:space:]]*" t "[[:space:]]*>", "", m)
+    sub("</[[:space:]]*" t "[[:space:]]*>$", "", m)
     return m
   }
   return ""
 }
+
+# versucht mehrere tag-varianten der reihe nach
+function first_nonempty(block, a1,a2,a3,a4,a5,    v) {
+  v = a1; if (v != "") return v
+  v = a2; if (v != "") return v
+  v = a3; if (v != "") return v
+  v = a4; if (v != "") return v
+  v = a5; if (v != "") return v
+  return ""
+}
+
 BEGIN {
-  # Datei komplett lesen
   xml = ""
   while ((getline line < file) > 0) xml = xml line "\n"
 
-  # Musikmoment-Blöcke splitten
-  n = split(xml, parts, "<Musikmoment>")
+  # case-insensitive arbeiten: wir behalten original für values, aber fürs splitten nehmen wir auch lowercase.
+  lower = tolower(xml)
+
+  # musikmoment-tags finden (unterstützt <Musikmoment> / <musikmoment>)
+  # wir splitten auf beide Varianten, indem wir im lower-string splitten und dann im original mit index nachziehen.
+  # einfacher: wir suchen in original mit regex, aber IGNORECASE.
+  IGNORECASE = 1
+
   print "<div class=\"table-wrap\">"
   print "<table class=\"data-table\">"
-  print "<thead><tr><th>Song</th><th>Künstler</th><th>Stimmung</th><th>Situation</th><th>Notizen</th></tr></thead><tbody>"
+  print "<thead><tr><th>Song</th><th>Künstler/in</th><th>Stimmung</th><th>Situation</th><th>Notizen</th></tr></thead><tbody>"
 
   count = 0
-  for (i=2; i<=n; i++) {
-    block = parts[i]
-    sub("</Musikmoment>.*$", "", block)
 
-    song = gettag(block, "Song")
-    kuenstler = gettag(block, "Kuenstler")
-    stimmung = gettag(block, "Stimmung")
-    situation = gettag(block, "Situation")
-    notizen = gettag(block, "Notizen")
+  # alle <...musikmoment...> Blöcke iterieren
+  pos = 1
+  while (match(substr(xml, pos), /<musikmoment[[:space:]]*>/)) {
+    start = pos + RSTART - 1
+    # ende suchen
+    rest = substr(xml, start)
+    if (!match(rest, /<\/musikmoment[[:space:]]*>/)) break
+    end = start + RSTART + RLENGTH - 2
 
-    if (song kuenstler stimmung situation notizen == "") continue
+    block = substr(xml, start, end - start + 1)
 
-    print "<tr>"
-    print "<td>" html_escape(song) "</td>"
-    print "<td>" html_escape(kuenstler) "</td>"
-    print "<td>" html_escape(stimmung) "</td>"
-    print "<td>" html_escape(situation) "</td>"
-    print "<td>" html_escape(notizen) "</td>"
-    print "</tr>"
-    count++
+    # tags extrahieren (mehrere Varianten)
+    song = first_nonempty(block,
+      gettag_ci(block, "Song"),
+      gettag_ci(block, "Songtitel"),
+      gettag_ci(block, "Titel"),
+      gettag_ci(block, "Title"),
+      ""
+    )
+
+    artist = first_nonempty(block,
+      gettag_ci(block, "Künstler"),
+      gettag_ci(block, "Kuenstler"),
+      gettag_ci(block, "KünstlerIn"),
+      gettag_ci(block, "Artist"),
+      ""
+    )
+
+    mood = first_nonempty(block,
+      gettag_ci(block, "Stimmung"),
+      gettag_ci(block, "Mood"),
+      "",
+      "",
+      ""
+    )
+
+    situation = first_nonempty(block,
+      gettag_ci(block, "Situation"),
+      gettag_ci(block, "Kontext"),
+      "",
+      "",
+      ""
+    )
+
+    notes = first_nonempty(block,
+      gettag_ci(block, "Notizen"),
+      gettag_ci(block, "Notiz"),
+      gettag_ci(block, "Notes"),
+      "",
+      ""
+    )
+
+    # nur rows drucke, wenn mind. song oder artist gefüllt ist
+    if (song != "" || artist != "") {
+      print "<tr>"
+      print "<td>" html_escape(song) "</td>"
+      print "<td>" html_escape(artist) "</td>"
+      print "<td>" html_escape(mood) "</td>"
+      print "<td>" html_escape(situation) "</td>"
+      print "<td>" html_escape(notes) "</td>"
+      print "</tr>"
+      count++
+    }
+
+    pos = end + 1
   }
 
   if (count == 0) {
-    print "<tr><td colspan=\"5\"><i>Keine Einträge vorhanden.</i></td></tr>"
+    print "<tr><td colspan=\"5\"><i>Keine Einträge gefunden. (XML-Tags stimmen evtl. nicht überein.)</i></td></tr>"
   }
 
   print "</tbody></table></div>"
@@ -106,11 +178,7 @@ cat <<'HTML'
       </div>
 
       <p class="list-link" style="margin-top:1rem;">
-        <a href="../musik.html">← zurück zum Formular</a>
-      </p>
-
-      <p class="card-text" style="margin-top:0.5rem;">
-        (Optional für Dozent: <a href="../data/musikmomente.xml" target="_blank" rel="noopener">XML-Datei direkt öffnen</a>)
+        <a href="../musik.html">← zurück</a>
       </p>
     </section>
   </main>
