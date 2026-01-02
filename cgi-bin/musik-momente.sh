@@ -83,22 +83,7 @@ awk -v song="$song" -v artist="$artist" -v mood="$mood" -v situation="$situation
 ' "$XML_FILE" > "$tmp"
 mv "$tmp" "$XML_FILE"
 
-# --- HTML-Response (Navigation zurück zum Formular oder zur Liste)
-printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-cat <<HTML
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <title>Musikmoment gespeichert</title>
-</head>
-<body>
-  <h1>✅ Musikmoment gespeichert</h1>
-  <p>Der Eintrag wurde in der XML-Datei gespeichert.</p>
-  <ul>
-    <li><a href="../musik.html">Zurück zum Formular</a></li>
-    <li><a href="musik-liste.sh">Musikmomente anzeigen</a></li>
-  </ul>
-</body>
-</html>
-HTML
+# --- Redirect zurück zur normalen HTML-Seite
+printf "Status: 303 See Other\r\n"
+printf "Location: ../musik.html?saved=1\r\n\r\n"
+exit 0
