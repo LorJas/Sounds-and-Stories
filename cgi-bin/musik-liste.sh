@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- Pfade
-DATA_DIR="$(cd "$(dirname "$0")/../data" && pwd)"
-CSV_FILE="$DATA_DIR/book-exchange.csv"
+XML_FILE="/var/www/html/Sounds-and-Stories/data/musikmomente.xml"
 
-# --- HTTP Header
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 
 cat <<'HTML'
@@ -13,112 +10,110 @@ cat <<'HTML'
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Book Exchange – Übersicht</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
-    h1 { margin: 0 0 12px 0; }
-    a { color: inherit; }
-    .topbar { display:flex; align-items:center; gap:16px; margin-bottom: 14px; }
-    .hint { color:#444; margin: 0 0 18px 0; }
-    .table-wrapper { overflow-x: auto; border: 1px solid #ddd; border-radius: 10px; }
-    table { border-collapse: collapse; width: 100%; min-width: 900px; }
-    th, td { padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: top; text-align: left; }
-    thead th { background: #f6f6f6; border-bottom: 1px solid #ddd; }
-    tr:hover td { background: #fafafa; }
-    .empty { padding: 14px; }
-  </style>
+  <title>Musikmomente – Übersicht</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <div class="topbar">
-    <h1>📚 Book Exchange</h1>
-    <a href="../book-exchange.html">Zurück zum Formular</a>
-  </div>
-  <p class="hint">Hier siehst du alle eingereichten Buchangebote aus der CSV-Datei.</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a href="../index.html" class="brand-title">Sounds &amp; Stories</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section-header">
+        <h1 class="section-title">🎵 Gespeicherte Musikmomente</h1>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
 HTML
 
-# --- Falls CSV fehlt oder leer
-if [[ ! -f "$CSV_FILE" ]] || [[ ! -s "$CSV_FILE" ]]; then
-  cat <<'HTML'
-  <div class="table-wrapper">
-    <div class="empty">Noch keine Einträge vorhanden.</div>
-  </div>
-</body>
-</html>
-HTML
+if [[ ! -f "$XML_FILE" ]]; then
+  echo "<p><b>Fehler:</b> XML-Datei nicht gefunden: ${XML_FILE}</p>"
+  echo "        </div></div></section></main></body></html>"
   exit 0
 fi
 
-# --- Tabelle starten
+# Einfaches XML-Parsing (für eure fixe Struktur)
+gawk -v file="$XML_FILE" '
+function html_escape(s,    t) {
+  t = s
+  gsub(/&/, "\\&amp;", t)
+  gsub(/</, "\\&lt;", t)
+  gsub(/>/, "\\&gt;", t)
+  gsub(/"/, "\\&quot;", t)
+  return t
+}
+function gettag(block, tag,    re, m) {
+  re = "<" tag ">[^<]*</" tag ">"
+  if (match(block, re)) {
+    m = substr(block, RSTART, RLENGTH)
+    gsub("^<" tag ">", "", m)
+    gsub("</" tag ">$", "", m)
+    return m
+  }
+  return ""
+}
+BEGIN {
+  # Datei komplett lesen
+  xml = ""
+  while ((getline line < file) > 0) xml = xml line "\n"
+
+  # Musikmoment-Blöcke splitten
+  n = split(xml, parts, "<Musikmoment>")
+  print "<div class=\"table-wrap\">"
+  print "<table class=\"data-table\">"
+  print "<thead><tr><th>Song</th><th>Künstler</th><th>Stimmung</th><th>Situation</th><th>Notizen</th></tr></thead><tbody>"
+
+  count = 0
+  for (i=2; i<=n; i++) {
+    block = parts[i]
+    sub("</Musikmoment>.*$", "", block)
+
+    song = gettag(block, "Song")
+    kuenstler = gettag(block, "Kuenstler")
+    stimmung = gettag(block, "Stimmung")
+    situation = gettag(block, "Situation")
+    notizen = gettag(block, "Notizen")
+
+    if (song kuenstler stimmung situation notizen == "") continue
+
+    print "<tr>"
+    print "<td>" html_escape(song) "</td>"
+    print "<td>" html_escape(kuenstler) "</td>"
+    print "<td>" html_escape(stimmung) "</td>"
+    print "<td>" html_escape(situation) "</td>"
+    print "<td>" html_escape(notizen) "</td>"
+    print "</tr>"
+    count++
+  }
+
+  if (count == 0) {
+    print "<tr><td colspan=\"5\"><i>Keine Einträge vorhanden.</i></td></tr>"
+  }
+
+  print "</tbody></table></div>"
+}
+' 2>/dev/null
+
 cat <<'HTML'
-  <div class="table-wrapper">
-    <table>
-      <thead>
-HTML
+        </div>
+      </div>
 
-# --- Header-Zeile lesen und als <th> ausgeben
-# (Header hat keine Quotes, aber wir behandeln ihn trotzdem robust)
-{
-  IFS= read -r header_line || true
-  # header_line z.B.: Autor,Titel,Genre,Zustand,Sprache,E-Mail,Versandadresse
+      <p class="list-link" style="margin-top:1rem;">
+        <a href="../musik.html">← zurück zum Formular</a>
+      </p>
 
-  echo "<tr>"
-  IFS=',' read -r -a header_cols <<< "$header_line"
-  for col in "${header_cols[@]}"; do
-    # Quotes entfernen + HTML minimal entschärfen
-    col="${col//\"/}"
-    col="${col//&/&amp;}"
-    col="${col//</&lt;}"
-    col="${col//>/&gt;}"
-    echo "<th>$col</th>"
-  done
-  echo "</tr>"
-
-  cat <<'HTML'
-      </thead>
-      <tbody>
-HTML
-
-  # --- Datenzeilen lesen (7 Spalten!)
-  # CSV wird von deinem book-exchange.sh so geschrieben:
-  # "Autor","Titel","Genre","Zustand","Sprache","E-Mail","Versandadresse"
-  while IFS=',' read -r autor titel genre zustand sprache email adresse; do
-    # Leere Zeilen überspringen
-    [[ -z "${autor}${titel}${genre}${zustand}${sprache}${email}${adresse}" ]] && continue
-
-    # Quotes entfernen
-    autor="${autor//\"/}"
-    titel="${titel//\"/}"
-    genre="${genre//\"/}"
-    zustand="${zustand//\"/}"
-    sprache="${sprache//\"/}"
-    email="${email//\"/}"
-    adresse="${adresse//\"/}"
-
-    # HTML-Escaping (einfach, aber ausreichend für dein Projekt)
-    for v in autor titel genre zustand sprache email adresse; do
-      eval "$v=\"\${$v//&/&amp;}\""
-      eval "$v=\"\${$v//</&lt;}\""
-      eval "$v=\"\${$v//>/&gt;}\""
-    done
-
-    echo "<tr>"
-    echo "<td>$autor</td>"
-    echo "<td>$titel</td>"
-    echo "<td>$genre</td>"
-    echo "<td>$zustand</td>"
-    echo "<td>$sprache</td>"
-    echo "<td>$email</td>"
-    echo "<td>$adresse</td>"
-    echo "</tr>"
-  done
-} < "$CSV_FILE"
-
-# --- Tabelle/Seite schließen
-cat <<'HTML'
-      </tbody>
-    </table>
-  </div>
+      <p class="card-text" style="margin-top:0.5rem;">
+        (Optional für Dozent: <a href="../data/musikmomente.xml" target="_blank" rel="noopener">XML-Datei direkt öffnen</a>)
+      </p>
+    </section>
+  </main>
 </body>
 </html>
 HTML
