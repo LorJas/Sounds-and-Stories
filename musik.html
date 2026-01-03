@@ -7,49 +7,50 @@
     <title>Musik als Ruhepunkt</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
-  
-<body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">
-        <a class="brand-title" href="index.html">Sounds &amp; Stories</a>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+        <a href="index.html" class="brand-title">Sounds &amp; Stories</a>
+        </div>
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav-list">
+            <li><a href="book-exchange.html" class="nav-link">Book Exchange</a></li>
+            <li><a href="musik.html" class="nav-link nav-link--active">Musik als Ruhepunkt</a></li>
+            <li><a href="impressum.html" class="nav-link">Impressum</a></li>
+          </ul>
+        </nav>
       </div>
+    </header>
 
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><a class="nav-link" href="book-exchange.html">Book Exchange</a></li>
-          <li><a class="nav-link nav-link--active" href="musik.html">Musik als Ruhepunkt</a></li>
-          <li><a class="nav-link" href="impressum.html">Impressum</a></li>
-        </ul>
-      </nav>
+    <main class="page">
+     <section class="section" aria-labelledby="musik-title">
+  <h1 id="musik-title" class="section-title">Musik als Ruhepunkt</h1>
+</section>
+
+<section class="section section--intro">
+  <div class="intro-layout">
+
+    <div class="intro-image">
+      <img src="img/Musik als Ruhepunkt.jpg" alt="Musik als Ruhepunkt">
     </div>
-  </header>
 
-  <main class="page">
+    <article class="intro-text card">
+      <h2 class="card-title">Über mein Hobby</h2>
 
-    <!-- Intro / Bild + Text (wie vorher, Layout bleibt korrekt) -->
-    <section class="section section--intro">
-      <div class="intro-layout">
-        <div class="intro-image">
-          <img src="img/Musik als Ruhepunkt.jpg" alt="Wohnzimmer-Konzert" />
-        </div>
+      <p class="card-text">
+        Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht, um perfekt zu sein - eher, um den Kopf freizubekommen und kurz abzuschalten.
+      </p>
+      <p class="card-text">
+        Heute spiele ich vor allem für mich - abends, wenn es ruhig wird, oder wenn ich einfach etwas Abstand brauche. Aus diesen Momenten ist die Idee entstanden, einen kleinen Wohnzimmer-Konzertabend zu machen, bei dem ihr mir Songs vorschlagen könnt, die ich für euch spiele.
+      </p>
+      <p class="card-text">
+        Auf dieser Seite sammle ich solche Musikmomente und Songwünsche. Die Tabelle und das Formular unten sind sozusagen die Setlist für diesen Abend - mit euren Geschichten, Stimmungen und Liedern.
+      </p>
+    </article>
 
-        <div class="intro-text card">
-          <h1 class="card-title">Musik als Ruhepunkt</h1>
-          <p class="card-text">
-            Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht, um perfekt zu sein – eher, um den Kopf
-            freizubekommen und kurz abzuschalten.
-          </p>
-          <p class="card-text">
-            Heute spiele ich vor allem für mich – abends, wenn es ruhig wird, oder wenn ich einfach etwas Abstand brauche.
-          </p>
-          <p class="card-text">
-            Auf dieser Seite sammle ich solche Musikmomente und Songwünsche. Die Tabelle und das Formular unten sind
-            sozusagen die Setlist für diesen Abend – mit euren Geschichten, Stimmungen und Liedern.
-          </p>
-        </div>
-      </div>
-    </section>
+  </div>
+</section>
 
     <!-- Tabelle (statisch) -->
     <section class="section">
@@ -97,8 +98,10 @@
       </div>
 
       <p class="card-text">
-        Wenn du möchtest, dass ein bestimmter Song Teil des kleinen Wohnzimmer-Konzerts wird, kannst du ihn hier eintragen.
-        Je mehr du über Stimmung und Situation erzählst, desto besser kann ich den Abend auf euch anpassen.
+        Wenn du möchtest, dass ein bestimmter Song Teil des kleinen
+        Wohnzimmer-Konzerts wird, kannst du ihn hier eintragen. Je mehr du
+        über Stimmung und Situation erzählst, desto besser kann ich den
+        Abend auf euch anpassen.
       </p>
 
       <form class="form" method="post" accept-charset="UTF-8" action="cgi-bin/musik-momente.sh">
@@ -142,19 +145,16 @@
           #saved:target { display:block; }
         </style>
 
-        <!-- NUR HIER (einzig) direkt unter em Button -->
         <p class="card-text" style="margin-top: 0.5rem;">
           <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Alle gespeicherten Musikmomente anzeigen</a>
         </p>
 
-        <!-- NUR Validierung, kei Link -->
         <p class="card-text saved-hint" id="saved">
           ✅ Dein Musikmoment wurde gespeichert.
         </p>
       </form>
     </section>
 
-    <!-- Media -->
     <section class="section" aria-labelledby="media-title">
       <div class="media-card">
         <h3 class="media-card-header" id="media-title">Beispiel aus meinem Wohnzimmer-Konzert 🎵</h3>
