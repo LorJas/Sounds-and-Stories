@@ -2,20 +2,13 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="Valeria Mytsik" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Musik als Ruhepunkt</title>
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Kein JavaScript: Save-Hinweis via #saved (CSS :target) -->
   <style>
-    .saved-hint {
-      display: none;
-      margin-top: 1rem;
-    }
-    #saved:target {
-      display: block;
-    }
+    .saved-hint { display: none; margin-top: 0.75rem; }
+    #saved:target { display: block; }
   </style>
 </head>
 
@@ -23,82 +16,66 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <a href="index.html" class="brand-title">Sounds &amp; Stories</a>
+        <a class="brand-title" href="index.html">Sounds &amp; Stories</a>
       </div>
 
-      <nav class="nav" aria-label="Hauptnavigation">
+      <nav class="nav">
         <ul class="nav-list">
-          <li><a href="book-exchange.html" class="nav-link">Book Exchange</a></li>
-          <li><a href="musik.html" class="nav-link nav-link--active">Musik als Ruhepunkt</a></li>
-          <li><a href="impressum.html" class="nav-link">Impressum</a></li>
+          <li><a class="nav-link" href="book-exchange.html">Book Exchange</a></li>
+          <li><a class="nav-link nav-link--active" href="musik.html">Musik als Ruhepunkt</a></li>
+          <li><a class="nav-link" href="impressum.html">Impressum</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main class="page">
-    <!-- Titel -->
-    <section class="section" aria-labelledby="musik-title">
-      <h1 id="musik-title" class="section-title">Musik als Ruhepunkt</h1>
-    </section>
 
-    <!-- Intro -->
+    <!-- Intro / Bild + Text (wie vorher, Layout bleibt korrekt) -->
     <section class="section section--intro">
       <div class="intro-layout">
         <div class="intro-image">
-          <img src="img/Musik als Ruhepunkt.jpg" alt="Musik als Ruhepunkt" />
+          <img src="img/Musik als Ruhepunkt.jpg" alt="Wohnzimmer-Konzert" />
         </div>
 
-        <article class="intro-text card">
-          <h2 class="card-title">Über mein Hobby</h2>
-
+        <div class="intro-text card">
+          <h1 class="card-title">Musik als Ruhepunkt</h1>
           <p class="card-text">
-            Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht, um perfekt zu sein – eher, um den Kopf freizubekommen und kurz abzuschalten.
+            Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht, um perfekt zu sein – eher, um den Kopf
+            freizubekommen und kurz abzuschalten.
           </p>
           <p class="card-text">
             Heute spiele ich vor allem für mich – abends, wenn es ruhig wird, oder wenn ich einfach etwas Abstand brauche.
           </p>
           <p class="card-text">
-            Auf dieser Seite sammle ich solche Musikmomente und Songwünsche. Die Tabelle und das Formular unten sind sozusagen die Setlist für diesen Abend – mit euren Geschichten, Stimmungen und Liedern.
+            Auf dieser Seite sammle ich solche Musikmomente und Songwünsche. Die Tabelle und das Formular unten sind
+            sozusagen die Setlist für diesen Abend – mit euren Geschichten, Stimmungen und Liedern.
           </p>
-        </article>
+        </div>
       </div>
     </section>
 
-    <!-- Musikmomente (Tabelle) -->
-    <section class="section" aria-labelledby="musik-table-title">
+    <!-- Tabelle (statisch) -->
+    <section class="section">
       <div class="section-header">
-        <h2 id="musik-table-title" class="section-title">Meine Musikmomente</h2>
-        <p class="card-text" style="margin-top: 0.5rem;">
-          <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Musikmomente anzeigen</a>
-        </p>
-
-
-        <!-- SAVE-HINWEIS: erscheint nur, wenn URL auf .../musik.html#saved zeigt -->
-        <div id="saved" class="card-text saved-hint">
-          ✅ Dein Musikmoment wurde gespeichert.
-          <br />
-          <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Musikmomente anzeigen</a>
-          &nbsp;·&nbsp;
-          <a href="musik.html">Hinweis ausblenden</a>
-        </div>
+        <h2 class="section-title">Meine Musikmomente</h2>
       </div>
 
       <p class="card-text">
-        Hier findest du eine Auswahl von Songvorschlägen, die andere bereits eingereicht haben – und die ich beim Wohnzimmer-Abend ganz sicher spielen werde.
+        Hier findest du eine Auswahl von Songvorschlägen, die andere bereits eingereicht haben – und die ich beim
+        Wohnzimmer-Abend ganz sicher spielen werde.
       </p>
 
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
-              <th>Song</th>
-              <th>Künstler/in</th>
-              <th>Stimmung</th>
-              <th>Situation</th>
+              <th>SONG</th>
+              <th>KÜNSTLER/IN</th>
+              <th>STIMMUNG</th>
+              <th>SITUATION</th>
             </tr>
           </thead>
-
           <tbody>
             <tr>
               <td>Above and Below</td>
@@ -108,22 +85,17 @@
             </tr>
             <tr>
               <td>September Rain</td>
-              <td>Cassyscete</td>
+              <td>Cassyccete</td>
               <td>melancholisch, emotional</td>
               <td>alleine zuhause, Gedanken sortieren</td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <!-- Optional (ohne JS): Liste immer zugänglich für Dozent -->
-      <p class="card-text" style="margin-top: 0.75rem;">
-        <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Alle gespeicherten Musikmomente in neuem Tab öffnen</a>
-      </p>
     </section>
 
     <!-- Formular -->
-    <section class="section" aria-labelledby="musik-form-title">
+    <section class="section" aria-labelledby="musik-form-title" id="musik-form">
       <div class="section-header">
         <h2 id="musik-form-title" class="section-title">Neuen Songwunsch erfassen</h2>
       </div>
@@ -138,76 +110,63 @@
           <div class="form-column">
             <div class="form-row">
               <label for="song">Songtitel</label>
-              <input
-                type="text"
-                id="song"
-                name="song"
-                required
-                placeholder="Titel des Songs"
-              />
+              <input type="text" id="song" name="song" required placeholder="Titel des Songs" />
             </div>
 
             <div class="form-row">
               <label for="artist">Künstler/in</label>
-              <input
-                type="text"
-                id="artist"
-                name="artist"
-                required
-                placeholder="Name der Künstlerin / des Künstlers"
-              />
+              <input type="text" id="artist" name="artist" required placeholder="Name der Künstlerin / des Künstlers" />
             </div>
           </div>
 
           <div class="form-column">
             <div class="form-row">
               <label for="mood">Stimmung</label>
-              <input
-                type="text"
-                id="mood"
-                name="mood"
-                required
-                placeholder="z. B. ruhig, energiegeladen, melancholisch"
-              />
+              <input type="text" id="mood" name="mood" placeholder="z. B. ruhig, energiegeladen, melancholisch" />
             </div>
 
             <div class="form-row">
               <label for="situation">Situation</label>
-              <input
-                type="text"
-                id="situation"
-                name="situation"
-                required
-                placeholder="z. B. Abend zu Hause, unterwegs, gemeinsame Erinnerung"
-              />
+              <input type="text" id="situation" name="situation" placeholder="z. B. Abend zu Hause, unterwegs, gemeinsame Erinnerung" />
             </div>
           </div>
         </div>
 
         <div class="form-row">
           <label for="notes">Notizen</label>
-          <textarea
-            id="notes"
-            name="notes"
-            placeholder="Was verbindest du mit diesem Song? (z. B. Erinnerung, Stimmung, Anlass)"
-          ></textarea>
+          <textarea id="notes" name="notes" placeholder="Was verbindest du mit diesem Song? (z. B. Erinnerung, Stimmung, Anlass)"></textarea>
         </div>
 
         <div class="form-row">
           <button type="submit" class="btn btn-primary">Musikmoment speichern</button>
         </div>
+
+        <style>
+          .saved-hint { display:none; margin-top:0.75rem; }
+          #saved:target { display:block; }
+        </style>
+
+        <!-- NUR HIER (einzig) direkt unter em Button -->
+        <p class="card-text" style="margin-top: 0.5rem;">
+          <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Alle gespeicherten Musikmomente anzeigen</a>
+        </p>
+
+        <!-- NUR Validierung, kei Link -->
+        <p class="card-text saved-hint" id="saved">
+          ✅ Dein Musikmoment wurde gespeichert.
+        </p>
       </form>
     </section>
 
     <!-- Media -->
     <section class="section" aria-labelledby="media-title">
       <div class="media-card">
-        <h3 id="media-title" class="media-card-header">Beispiel aus meinem Wohnzimmer-Konzert 🎵</h3>
+        <h3 class="media-card-header" id="media-title">Beispiel aus meinem Wohnzimmer-Konzert 🎵</h3>
 
         <p class="card-text">
           <strong>Lena August – Хронически скучать</strong><br />
           Eine kleine akustische Cover-Version von mir.<br />
-          Der Song ist auf Russisch – vielleicht klingt er für dich ein wenig ungewohnt, aber genau das macht seinen Charme aus.<br />
+          Der Song ist auf Russisch – vielleicht klingt er für dich ein wenig ungewohnt, aber genau das macht seinen Charme aus.
           Mehr Musikmomente findest du auf meinem
           <a href="https://www.instagram.com/valeriiia.mytsik/" target="_blank" rel="noopener noreferrer">Instagram</a>.
         </p>
@@ -218,6 +177,7 @@
         </audio>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -225,9 +185,8 @@
       <div>
         &copy; 2025 Valeria Mytsik &amp; Loresa Jasari · Sounds &amp; Stories · Musik als Ruhepunkt
       </div>
-
       <div class="footer-links">
-        <a href="mailto:valeriia.mytsik@fhrg.stud.ch">valeriia.mytsik@fhrg.stud.ch</a>
+        <a href="mailto:valeria.mytsik@fhg-stud.ch">valeria.mytsik@fhg-stud.ch</a>
       </div>
     </div>
   </footer>
