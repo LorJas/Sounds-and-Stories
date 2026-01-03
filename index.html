@@ -1,187 +1,194 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sounds &amp; Stories | Book Exchange</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Valeriia Mytsik &amp; Loresa Jasari">
+    <title>Sound &amp; Stories</title>
+    <link rel="stylesheet" href="css/style.css">
   </head>
-
   <body>
     <header class="site-header">
       <div class="header-inner">
         <div class="brand">
-          <a class="brand-title" href="index.html">Sounds &amp; Stories</a>
+            <a href="index.html" class="brand-title">Sounds &amp; Stories</a>
         </div>
-
-        <nav class="nav">
-          <a href="book-exchange.html" aria-current="page">Book Exchange</a>
-          <a href="musik.html">Musik als Ruhepunkt</a>
-          <a href="impressum.html">Impressum</a>
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav-list">
+            <li><a href="book-exchange.html" class="nav-link">Book Exchange</a></li>
+            <li><a href="musik.html" class="nav-link">Musik als Ruhepunkt</a></li>
+            <li><a href="impressum.html" class="nav-link">Impressum</a></li>
+          </ul>
         </nav>
       </div>
     </header>
 
     <main class="page">
-      <section class="section">
-        <h1 class="section-title">📚 Book Exchange Club</h1>
-
-        <div class="info-card">
-          <div class="info-left">
-            <img
-              src="img/book-exchange.png"
-              alt="Book Exchange Club"
-              class="info-image"
-            />
-          </div>
-
-          <div class="info-right">
-            <p>
-              Tausche Bücher statt sie verstauben zu lassen: Du gibst ein Buch in
-              den Tauschpool. Später bekommst du ein Überraschungsbuch.
-            </p>
+      <section class="hero hero--single" aria-labelledby="hero-title">
+        <div>
+          <p class="hero-text-eyebrow">Gemeinsamer Webauftritt</p>
+          <h1 id="hero-title" class="hero-title">
+            Valeriia &amp; Loresa - Wer wir sind.
+          </h1>
+          <p class="hero-subtitle">
+            Wir studieren Digital Business Management an der FH Graubünden und
+            verbinden unsere Berufe mit Themen, die uns privat wichtig sind:
+            Musik als Ruhepunkt und ein nachhaltiger Book Exchange Club.
+          </p>
+          <div class="hero-actions">
+            <a href="book-exchange.html" class="btn btn-primary">Zum Book Exchange Club</a>
+            <a href="musik.html" class="btn btn-primary">Zu Musik als Ruhepunkt</a>
           </div>
         </div>
-
-        <h2 class="section-title">So funktioniert der Book Exchange Club</h2>
-        <ol class="steps">
-          <li>Du trägst ein Buch ein, das du tauschen möchtest.</li>
-          <li>Dein Buch erscheint als verfügbarer Eintrag im Tauschpool.</li>
-          <li>Du erhältst später ein Überraschungsbuch per Post zugeschickt.</li>
-        </ol>
-
-        <h2 class="section-title">Dein Buch in den Tauschpool aufnehmen</h2>
-        <p class="section-subtitle">
-          Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in
-          der Übersicht der verfügbaren Bücher. Im Gegenzug erhältst du später
-          ein Überraschungsbuch per Post. Deine Adresse wird nur für den Versand
-          verwendet.
-        </p>
-
-        <form
-          class="form"
-          method="post"
-          action="cgi-bin/book-exchange.sh"
-          accept-charset="UTF-8"
-          enctype="application/x-www-form-urlencoded"
-        >
-          <div class="form-row form-row--2">
-            <div>
-              <label for="author">Autor</label>
-              <input
-                type="text"
-                id="author"
-                name="author"
-                required
-                placeholder="Name des Autors / der Autorin"
-              />
-            </div>
-
-            <div>
-              <label for="book-title">Buchtitel</label>
-              <input
-                type="text"
-                id="book-title"
-                name="title"
-                required
-                placeholder="Welches Buch möchtest du eintauschen?"
-              />
-            </div>
-          </div>
-
-          <div class="form-row form-row--2">
-            <div>
-              <label for="genre">Genre</label>
-              <select id="genre" name="genre" required>
-                <option value="" selected>Bitte wählen</option>
-                <option value="roman">Roman</option>
-                <option value="thriller">Thriller</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="sachbuch">Sachbuch</option>
-                <option value="biografie">Biografie</option>
-                <option value="jugendbuch">Jugendbuch</option>
-                <option value="sonstiges">Sonstiges</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="condition">Zustand</label>
-              <select id="condition" name="condition" required>
-                <option value="" selected>Bitte wählen</option>
-                <option value="neu">neu</option>
-                <option value="sehr gut">sehr gut</option>
-                <option value="gut">gut</option>
-                <option value="gebraucht">gebraucht</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row form-row--2">
-            <div>
-              <label for="language">Sprache</label>
-              <select id="language" name="language" required>
-                <option value="" selected>Bitte wählen</option>
-                <option value="DE">DE</option>
-                <option value="EN">EN</option>
-                <option value="FR">FR</option>
-                <option value="IT">IT</option>
-                <option value="Sonstiges">Sonstiges</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="contact">E-Mail</label>
-              <input
-                type="email"
-                id="contact"
-                name="contact"
-                required
-                placeholder="Für Rückfragen"
-              />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <label for="shipping">Versandadresse</label>
-            <input
-              type="text"
-              id="shipping"
-              name="shipping"
-              required
-              placeholder="Strasse, Nr., PLZ und Ort"
-            />
-          </div>
-
-          <p class="section-subtitle">
-            Deine Adressdaten und deine E-Mail-Adresse werden nur für den Versand
-            und Rückfragen zum Büchertausch genutzt und nicht öffentlich angezeigt.
-          </p>
-
-          <div class="form-row">
-            <button type="submit" class="btn btn-primary">
-              Buch zum Tausch freigeben
-            </button>
-          </div>
-        </form>
-
-        <div class="flash success" id="saved">✅ Buchangebot wurde gespeichert.</div>
-        <div class="flash error" id="error">❌ Bitte überprüfe die Eingaben im Formular.</div>
-
-        <p class="list-link">
-          <a href="cgi-bin/book-liste.sh" target="_blank" rel="noopener"
-            >Buchangebote anzeigen</a
-          >
-        </p>
+        
       </section>
-    </main>
+
+      <section class="section" aria-labelledby="about-title">
+        <div class="section-header">
+          <h2 id="about-title" class="section-title">Über uns</h2>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3 class="card-title">Loresa - Wer bin ich?</h3>
+            <p class="card-text">
+              Ich bin Loresa, 24, aus Dietikon. Digitale Ideen, die das Leben smarter machen, faszinieren mich.
+            </p>
+            <p class="card-text">
+              Ich mag alles, was Organisation, Struktur und ein bisschen Chaos verbindet, und probiere gerne neue Tools aus, um Dinge einfacher zu machen.
+              Gerade finde ich meinen Weg in der IT- und Digitalisierungswelt. Es macht mir Spass, mich weiterzuentwickeln, neue Perspektiven zu entdecken und herauszufinden, was wirklich zu mir passt.
+            </p>
+            <p class="card-text">
+              Ich würde mich als offen, neugierig und ziemlich „we got this“ beschreiben - mit Humor und der Überzeugung, dass man mit Neugier fast alles lernen kann.
+            </p>
+            <div class="profile-photo">
+              <img src="img/Loresa_Bild.jpg" alt="Loresa" class="profile-img">
+            </div>
+          </article>
+
+          <article class="card">
+            <h3 class="card-title">Valeriia - Wer ich bin</h3>
+            <p class="card-text">
+              Ich heisse Valeriia, bin 23 Jahre alt und lebe seit
+              dreieinhalb Jahren in der Schweiz.
+            </p>
+            <p class="card-text">
+              Ich arbeite als Online-Marketing-Spezialistin und habe kürzlich
+              mein Studium an der FH Graubünden begonnen.
+            </p>
+            <p class="card-text">
+              Marketing ist für mich eine Mischung aus Strategie, Kreativität
+              und Kommunikation - genau das, was ich mag. Manchmal ist das Leben
+              zwischen Arbeit und Studium ziemlich intensiv, aber ich versuche,
+              mir kleine Momente für mich selbst zu schaffen.
+            </p>
+            <p class="card-text">
+              Ich würde mich als ehrgeizig, neugierig und ein bisschen
+              chaotisch beschreiben - aber immer mit Humor.
+
+            </p>
+            <div class="profile-photo">
+              <img src="img/Valeriia_Bild.png" alt="Valeriia" class="profile-img">
+            </div>
+          </article>
+        </div>
+      </section>
+
+<section class="section" aria-labelledby="hobbies-title">
+  <div class="section-header">
+    <h2 id="hobbies-title" class="section-title">Unsere Hobbys</h2>
+  </div>
+
+  <div class="grid-2">
+
+    <article class="card">
+      <h3 class="card-title">Book Exchange Club</h3>
+      <p class="card-meta">Hobby von Loresa</p>
+      <p class="card-text">
+        Bücher haben für mich schon immer eine besondere Bedeutung. Sie
+        erweitern den Horizont, regen zum Nachdenken an und erzählen
+        Geschichten, die man am liebsten weitergeben möchte.
+      </p>
+      <p class="card-text">
+        Deshalb habe ich den Book Exchange Club ins Leben gerufen -
+        eine kleine Plattform, auf der Leser:innen ihre Bücher zum Tausch
+        anbieten können. Das Besondere: Du weisst nicht, welches Buch du
+        im Gegenzug erhältst. Du gibst ein Buch weiter - und bekommst
+        zufällig eines von jemand anderem zugeschickt.
+      </p>
+      <p class="card-text">
+        So entsteht ein spannender und nachhaltiger Kreislauf, bei dem
+        Geschichten weiterwandern, neue Entdeckungen gemacht werden und
+        Bücher nicht verstauben, sondern weiterleben.
+      </p>
+      <a href="book-exchange.html" class="btn btn-ghost">Mehr zum Book Exchange Club</a>
+    </article>
+
+    <article class="card">
+      <h3 class="card-title">Musik als Ruhepunkt</h3>
+      <p class="card-meta">Hobby von Valeriia</p>
+      <p class="card-text">
+        Wenn der Alltag laut wird, greife ich zur Gitarre. Ich spiele nicht, um
+        perfekt zu sein - eher, um den Kopf freizubekommen. Früher habe ich
+        regelmässig gespielt und manchmal sogar darüber nachgedacht, einen
+        Musik-Blog zu starten.
+      </p>
+      <p class="card-text">
+        Heute spiele ich vor allem für mich - abends, wenn es ruhig wird oder
+        wenn ich einfach etwas Abstand brauche. Musik ist für mich wie eine
+        Pause von allem, ein kleiner Ruhepunkt mitten im Chaos.
+      </p>
+      <p class="card-text">
+        Auf meiner Seite «Musik als Ruhepunkt» kannst du mir Songs vorschlagen,
+        die ich bei einem kleinen Wohnzimmer-Konzert spielen werde - so eine Art
+        persönlicher «Konzert im Wohnzimmer»-Abend. Du gibst mir Titel und
+        Stimmung, und ich mache daraus einen ruhigen, gemütlichen Gitarrenabend.
+      </p>
+      <a href="musik.html" class="btn btn-ghost">Mehr zu Musik als Ruhepunkt</a>
+    </article>
+
+  </div>
+</section>
+
+
+      <section class="section" aria-labelledby="links-title">
+        <div class="section-header">
+          <h2 id="links-title" class="section-title">Empfehlungen im Web</h2>
+        </div>
+
+        <ul class="link-list">
+          <li>
+            <a href="https://www.literature-map.com/" target="_blank" rel="noopener noreferrer">
+              Literature-map - Du gibst einen Autor ein und das System zeigt visuell, welche ähnlichen Autoren Leser*innen mögen
+            </a>
+          </li>
+          <li>
+            <a href="https://thestorygraph.com/" target="_blank" rel="noopener noreferrer">
+              The Story Graph - Analysiert deine Reading Mood, Themen, Trigger-Warnings und gibt dir ultra-genaue Empfehlungen.
+            </a>
+          </li>
+          <li>
+            <a href="https://everynoise.com" target="_blank" rel="noopener noreferrer">
+              Everynoise - interaktive Karte aller Musikgenres weltweit. Du klickst ein Genre an und bekommst sofort Hörproben.
+            </a>
+          </li>
+          <li>
+            <a href="https://radiooooo.com/" target="_blank" rel="noopener noreferrer">
+              Radiooooo - Du wählst ein Jahrzehnt + ein Land und bekommst typische Musik aus dieser Zeit.
+            </a>
+          </li>
+        </ul>
+      </section>
 
     <footer class="site-footer">
       <div class="footer-inner">
         <div>
-          &copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories ·
-          Book Exchange Club
+          &copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories
         </div>
-        <a href="mailto:loresa.jasari@fhgr.stud.ch">loresa.jasari@fhgr.stud.ch</a>
+        <div class="footer-links">
+          <a href="mailto:valeriia.mytsik@fhgr.stud.ch">valeriia.mytsik@fhgr.stud.ch</a>
+          <a href="mailto:loresa.jasari@fhgr.stud.ch">loresa.jasari@fhgr.stud.ch</a>
+        </div>
       </div>
     </footer>
   </body>
