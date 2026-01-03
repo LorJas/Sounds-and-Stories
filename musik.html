@@ -141,20 +141,19 @@
           <button type="submit" class="btn btn-primary">Musikmoment speichern</button>
         </div>
 
+        <style>
+          .saved-hint { display:none; margin-top:0.75rem; }
+          #saved:target { display:block; }
+        </style>
+
         <!-- NUR HIER (einzig) direkt unter em Button -->
         <p class="card-text" style="margin-top: 0.5rem;">
           <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Alle gespeicherten Musikmomente anzeigen</a>
         </p>
-        <p class="card-text" style="margin-top: 0.5rem;">
-          <a href="cgi-bin/musik-liste.sh" target="_blank" rel="noopener">Alle gespeicherten Musikmomente anzeigen</a>
-        </p>
-
 
         <!-- NUR Validierung, kei Link -->
         <p class="card-text saved-hint" id="saved">
           ✅ Dein Musikmoment wurde gespeichert.
-          <br />
-          <a href="musik.html#musik-form">Hinweis ausblenden</a>
         </p>
       </form>
     </section>
