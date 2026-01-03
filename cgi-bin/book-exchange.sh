@@ -61,6 +61,7 @@ fi
 
 # Datensatz anhängen
 echo "\"$author\",\"$title\",\"$genre\",\"$condition\",\"$language\",\"$contact\",\"$shipping\"" >> "$CSV_FILE"
+echo "\"$author\",\"$title\",\"$genre\",\"$condition\",\"$language\",\"$contact\",\"$shipping\"" >> "$CSV_FILE
 
 # 7) Redirect zurück zum Formular
 printf "Status: 303 See Other\r\n"
