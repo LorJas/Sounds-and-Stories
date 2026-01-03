@@ -3,89 +3,71 @@
 # Redirect danach zurück auf ../musik.html#saved
 
 set -euo pipefail
+umask 002
 
-# URL-Decoding (application/x-www-form-urlencoded)
+BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+DATA_DIR="$BASE_DIR/data"
+XML_FILE="$DATA_DIR/musikmomente.xml"
+
+# POST-Daten lesen
+read -r POST_DATA
+
+# Hilfsfunktion zum URL-Decoding
 urldecode() {
-  local data="${1//+/ }"
+  local data=${1//+/ }
   printf '%b' "${data//%/\\x}"
 }
 
-# Feld aus POST-Body anhand Key (name="...") extrahieren
-get_field() {
-  local key="$1"
-  local raw
-  raw="$(printf '%s' "$BODY" | tr '&' '\n' | awk -F= -v k="$key" '$1==k{print $2; exit}')"
-  urldecode "${raw:-}"
+# Werte extrahieren
+get_value() {
+  echo "$POST_DATA" | tr '&' '\n' | grep "^$1=" | cut -d= -f2- | urldecode
 }
 
-# XML-Escaping (Minimalset)
-xml_escape() {
-  local s="$1"
-  s="${s//&/&amp;}"
-  s="${s//</&lt;}"
-  s="${s//>/&gt;}"
-  s="${s//\"/&quot;}"
-  s="${s//\'/&apos;}"
-  printf '%s' "$s"
-}
+SONG="$(get_value song)"
+ARTIST="$(get_value artist)"
+MOOD="$(get_value mood)"
+SITUATION="$(get_value situation)"
+NOTES="$(get_value notes)"
 
-# POST-Body lesen
-CONTENT_LENGTH="${CONTENT_LENGTH:-0}"
-BODY=""
-
-if [[ "${REQUEST_METHOD:-}" == "POST" && "$CONTENT_LENGTH" -gt 0 ]]; then
-  IFS= read -r -n "$CONTENT_LENGTH" BODY || true
+# Leere Pflichtfelder abfangen
+if [[ -z "$SONG" || -z "$ARTIST" ]]; then
+  printf "Status: 303 See Other\r\n"
+  printf "Location: ../musik.html\r\n\r\n"
+  exit 0
 fi
 
-# Felder (müssen zu name="..." in musik.html passen)
-song="$(get_field "song")"
-artist="$(get_field "artist")"
-mood="$(get_field "mood")"
-situation="$(get_field "situation")"
-notes="$(get_field "notes")"
-
-song="$(xml_escape "$song")"
-artist="$(xml_escape "$artist")"
-mood="$(xml_escape "$mood")"
-situation="$(xml_escape "$situation")"
-notes="$(xml_escape "$notes")"
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-DATA_DIR="$(cd "$SCRIPT_DIR/../data" && pwd)"
-XML_FILE="$DATA_DIR/musikmomente.xml"
-
-TMP_FILE="$(mktemp "$DATA_DIR/.musikmomente.xml.XXXXXX")"
-
+# XML-Datei initialisieren, falls sie noch nicht existiert
 if [[ ! -f "$XML_FILE" ]]; then
-  cat > "$XML_FILE" <<'XML'
+  cat > "$XML_FILE" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Musikmomente>
-  <Titel>Songwünsche für den Wohnzimmer-Konzertabend</Titel>
 </Musikmomente>
-XML
+EOF
 fi
 
-awk -v song="$song" -v artist="$artist" -v mood="$mood" -v situation="$situation" -v notes="$notes" '
-BEGIN { inserted=0 }
-{
-  # Beim schliessenden Root-Tag: vorher neuen Block einfügen (nur 1x)
-  if ($0 ~ /<\/Musikmomente>/ && inserted==0) {
-    print "  <Musikmoment>"
-    print "    <Song>" song "</Song>"
-    print "    <Kuenstler>" artist "</Kuenstler>"
-    print "    <Stimmung>" mood "</Stimmung>"
-    print "    <Situation>" situation "</Situation>"
-    print "    <Notizen>" notes "</Notizen>"
-    print "  </Musikmoment>"
-    inserted=1
-  }
-  print $0
+# neuen Musikmoment einfügen (vor schliessendem Root-Tag)
+TMP_FILE="$(mktemp)"
+
+awk -v song="$SONG" \
+    -v artist="$ARTIST" \
+    -v mood="$MOOD" \
+    -v situation="$SITUATION" \
+    -v notes="$NOTES" '
+/<\/Musikmomente>/ {
+  print "  <Musikmoment>"
+  print "    <Song>" song "</Song>"
+  print "    <Kuenstler>" artist "</Kuenstler>"
+  print "    <Stimmung>" mood "</Stimmung>"
+  print "    <Situation>" situation "</Situation>"
+  print "    <Notizen>" notes "</Notizen>"
+  print "  </Musikmoment>"
 }
+{ print }
 ' "$XML_FILE" > "$TMP_FILE"
 
-mv -f "$TMP_FILE" "$XML_FILE"
+mv "$TMP_FILE" "$XML_FILE"
+chmod 664 "$XML_FILE"
 
-# Redirect zurück zur normalen HTML-Seite mit Anchor #saved
+# Redirect zurück zur Musik-Seite mit Erfolgshinweis
 printf "Status: 303 See Other\r\n"
 printf "Location: ../musik.html#saved\r\n\r\n"
-exit 0
