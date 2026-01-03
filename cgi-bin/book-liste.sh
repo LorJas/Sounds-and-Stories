@@ -21,44 +21,45 @@ cat <<'HTML'
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aktuelle Buchangebote</title>
+  <title>Book Exchange – Übersicht</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a class="brand-title" href="../index.html">Sounds &amp; Stories</a>
+      </div>
+    </div>
+  </header>
+
   <main class="page">
     <section class="section">
       <h1 class="section-title">📚 Aktuelle Buchangebote</h1>
-      <p class="section-subtitle">Diese Übersicht kommt aus der CSV-Datei (Book Exchange).</p>
 
       <div class="card">
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Autor</th>
-                <th>Titel</th>
-                <th>Genre</th>
-                <th>Zustand</th>
-                <th>Sprache</th>
-                <th>E-Mail</th>
-                <th>Versandadresse</th>
+                <th>AUTOR</th>
+                <th>TITEL</th>
+                <th>GENRE</th>
+                <th>ZUSTAND</th>
+                <th>SPRACHE</th>
+                <th>E-MAIL</th>
+                <th>VERSANDADRESSE</th>
               </tr>
             </thead>
             <tbody>
 HTML
 
-# Wenn Datei fehlt:
 if [[ ! -f "$CSV_FILE" ]]; then
   echo '<tr><td colspan="7">Noch keine Einträge vorhanden.</td></tr>'
 else
-  # Header überspringen (1. Zeile)
   tail -n +2 "$CSV_FILE" | while IFS= read -r line; do
-    # Leere Zeilen skippen
     [[ -z "${line// /}" ]] && continue
 
-    # CSV line erwartet: "a","b","c","d","e","f","g"
-    # Quotes entfernen (nur am Rand) und dann splitten
-    # (für eure Semesterarbeit reicht das; wenn’s komplexer wird -> python csv)
     clean="${line%\"}"
     clean="${clean#\"}"
     IFS='","' read -r author title genre condition language contact shipping <<< "$clean"
@@ -81,7 +82,7 @@ cat <<'HTML'
         </div>
       </div>
 
-      <p class="list-link" style="margin-top: 1rem;">
+      <p class="list-link" style="margin-top: 12px;">
         <a href="../book-exchange.html">← zurück zum Formular</a>
       </p>
     </section>
