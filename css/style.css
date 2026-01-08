@@ -571,3 +571,16 @@ textarea {min-height: 5rem;
   .intro-image, .intro-text {width: 100%;
     max-width: 360px;}
 }
+
+.alert { display: none; padding: 10px 12px; border-radius: 10px; margin-top: 10px; }
+.alert--success { border: 1px solid #2e7d32; }
+.alert--error { border: 1px solid #c62828; }
+#saved:target, #error:target { display: block; }
+
+.embed-frame { margin-top: 12px; }
+.embed-frame iframe {
+  width: 100%;
+  min-height: 360px;
+  border: 0;
+  border-radius: 12px;
+}
