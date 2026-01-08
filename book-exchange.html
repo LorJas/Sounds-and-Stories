@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Pflicht-Meta (Semesterarbeit) -->
     <meta name="author" content="Loresa Jasari">
+    <meta name="date" content="2025-01-08">
+    <meta name="description" content="Book Exchange Club – Bücher zum Tausch anbieten und aktuelle Angebote ansehen.">
+    <meta name="keywords" content="Book Exchange, Büchertausch, Hobby, CSV, FHGR, GLIN">
+
     <title>Book Exchange Club</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
@@ -11,9 +17,9 @@
   <body>
     <header class="site-header">
       <div class="header-inner">
-         <div class="brand">
-      <a href="index.html" class="brand-title">Sounds &amp; Stories</a>
-    </div>
+        <div class="brand">
+          <a href="index.html" class="brand-title">Sounds &amp; Stories</a>
+        </div>
         <nav class="nav" aria-label="Hauptnavigation">
           <ul class="nav-list">
             <li><a href="book-exchange.html" class="nav-link nav-link--active">Book Exchange</a></li>
@@ -27,60 +33,45 @@
     <main class="page">
       <section class="section">
         <h1 id="be-title" class="section-title">Book Exchange Club</h1>
-        <p class="section-subtitle"> Bücher tauschen statt stapeln - ein kleiner, nachhaltiger Kreislauf. </p>
-      </section>
+        <p class="section-subtitle">Bücher tauschen statt stapeln – ein kleiner, nachhaltiger Kreislauf.</p>
 
-      <section class="section section--intro">
-        <div class="intro-layout">
-          <div class="intro-image">
-            <img src="img/Book_Exchange_Club.png" alt="Book Exchange Club Poster">
-          </div>
-
-          <article class="intro-text card">
-            <h2 class="card-title">Über dieses Hobby</h2>
-            <p class="card-text"> Bücher haben für mich schon immer eine besondere Bedeutung. Sie erweitern den Horizont, regen zum Nachdenken an und erzählen Geschichten, die man am liebsten weitergeben möchte. </p>
-            <p class="card-text"> Deshalb habe ich den Book Exchange Club ins Leben gerufen - eine kleine Plattform, auf der Leser:innen ihre Bücher zum Tausch anbieten können. </p>
-            <p class="card-text"> Das Besondere: Du weisst nicht, welches Buch du im Gegenzug erhältst. </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section section--light">
-        <h2 class="section-title">So funktioniert der Book Exchange Club</h2>
-        <ol class="steps">
-          <li>Du trägst ein Buch ein, das du tauschen möchtest.</li>
-          <li>Dein Buch erscheint als verfügbarer Eintrag im Tauschpool.</li>
-          <li>Du erhältst später ein Überraschungsbuch per Post zugeschickt.</li>
-        </ol>
+        <!-- Statusmeldungen über URL-Hash -->
+        <div id="saved" class="alert alert--success">✅ Gespeichert.</div>
+        <div id="error" class="alert alert--error">❌ Bitte fülle alle Pflichtfelder aus.</div>
       </section>
 
       <section class="section">
         <h2 class="section-title">Welche Bücher aktuell im Tauschpool sind</h2>
-        <p class="section-subtitle">In der Übersicht siehst du die aktuell verfügbaren Bücher im Tauschpool. Interne Angaben wie Zustand, Adresse und Kontakt werden nur für die Organisation des Tauschs verwendet.</p>
+        <p class="section-subtitle">
+          Öffentlich sichtbar sind nur Autor, Titel, Genre und Sprache. Kontakt, Zustand und Versandadresse sind intern.
+        </p>
+
+        <!-- Öffentliche Liste direkt auf der Seite -->
+        <div class="embed-frame">
+          <iframe title="Öffentliche Buchliste" src="cgi-bin/book-public.sh" loading="lazy"></iframe>
+        </div>
+
+        <!-- Link für Dozent. Volle Datenbank in neuem Tab -->
+        <p class="list-link" style="margin-top: 12px;">
+          <a href="cgi-bin/book-db.sh" target="_blank" rel="noopener noreferrer">🔒 Dozent: Link zur Datenbank (intern)</a>
+        </p>
       </section>
 
-      <!-- Formular -->
       <section class="section">
         <h2 id="be-form-title" class="section-title">Dein Buch in den Tauschpool aufnehmen</h2>
-        <p class="section-subtitle"> Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in der Übersicht der verfügbaren Bücher. Im Gegenzug erhältst du später ein Überraschungsbuch per Post. Deine Adresse wird nur für den Versand verwendet. </p>
-        
-        <form class="form" method="post" action="cgi-bin/book-exchange.sh" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded">  
+        <p class="section-subtitle">
+          Trage hier das Buch ein. Nach dem Absenden erscheint es sofort in der Übersicht – ohne dass die Datenbank automatisch geöffnet wird.
+        </p>
+
+        <form class="form" method="post" action="cgi-bin/book-exchange.sh" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded">
           <div class="form-row form-row--2">
             <div>
               <label for="author">Autor</label>
-              <input
-                type="text"
-                id="author"
-                name="author"
-                required placeholder="Name des Autors / der Autorin">
+              <input type="text" id="author" name="author" required placeholder="Name des Autors / der Autorin">
             </div>
             <div>
               <label for="book-title">Buchtitel</label>
-              <input
-                type="text"
-                id="book-title"
-                name="book_title"
-                required placeholder="Welches Buch möchtest du eintauschen?">
+              <input type="text" id="book-title" name="book_title" required placeholder="Welches Buch möchtest du eintauschen?">
             </div>
           </div>
 
@@ -123,38 +114,29 @@
             </div>
             <div>
               <label for="contact">E-Mail</label>
-              <input
-                type="email"
-                id="contact"
-                name="contact"
-                required placeholder="Für Rückfragen">
+              <input type="email" id="contact" name="contact" required placeholder="Für Rückfragen">
             </div>
           </div>
 
           <div class="form-row">
             <label for="shipping">Versandadresse</label>
-            <input
-              type="text"
-              id="shipping"
-              name="shipping"
-              required placeholder="Strasse, Nr., PLZ und Ort">
+            <input type="text" id="shipping" name="shipping" required placeholder="Strasse, Nr., PLZ und Ort">
           </div>
 
-          <p class="section-subtitle"> Deine Adressdaten und deine E-Mail-Adresse werden nur für den Versand und Rückfragen zum Büchertausch genutzt und nicht öffentlich angezeigt. </p>
+          <p class="section-subtitle">
+            Deine Adressdaten und deine E-Mail-Adresse werden nur intern für Versand und Rückfragen genutzt.
+          </p>
 
           <div class="form-row">
-            <button type="submit" class="btn btn-primary"> Buch zum Tausch freigeben </button>
+            <button type="submit" class="btn btn-primary">Buch zum Tausch freigeben</button>
           </div>
         </form>
-        <p class="list-link">
-          <a href="cgi-bin/book-liste.sh">📚 Aktuelle Buchangebote anzeigen</a>
-        </p>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <div> &copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories · Book Exchange Club </div>
+        <div>&copy; 2025 Valeriia Mytsik &amp; Loresa Jasari · Sounds &amp; Stories · Book Exchange Club</div>
         <a href="mailto:loresa.jasari@fhgr.stud.ch">loresa.jasari@fhgr.stud.ch</a>
       </div>
     </footer>
