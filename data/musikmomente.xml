@@ -17,4 +17,18 @@
     <Situation>ruhiger Abend</Situation>
     <Notizen>Für entspannte Momente.</Notizen>
   </Musikmoment>
+  <Musikmoment>
+    <Song>test</Song>
+    <Kuenstler>test</Kuenstler>
+    <Stimmung>test</Stimmung>
+    <Situation>test</Situation>
+    <Notizen>hfcljrkm</Notizen>
+  </Musikmoment>
+  <Musikmoment>
+    <Song>hcfaj</Song>
+    <Kuenstler>cdnc</Kuenstler>
+    <Stimmung>nsfd</Stimmung>
+    <Situation>svnd</Situation>
+    <Notizen>vnsd</Notizen>
+  </Musikmoment>
 </Musikmomente>
