@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# Book Exchange: CSV anzeigen (CGI)
 set -euo pipefail
 
 CSV_FILE="../data/book-exchange.csv"
-
 printf "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 
 escape_html() {
@@ -21,41 +19,42 @@ cat <<'HTML'
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Book Exchange – Übersicht</title>
+  <title>Book Exchange – Datenbank (intern)</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <a class="brand-title" href="../index.html">Sounds &amp; Stories</a>
+        <span class="brand-title">Sounds &amp; Stories</span>
       </div>
     </div>
   </header>
 
   <main class="page">
     <section class="section">
-      <h1 class="section-title">📚 Aktuelle Buchangebote</h1>
+      <h1 class="section-title">📚 Datenbank (intern)</h1>
+      <p class="section-subtitle">Alle eingetragenen Felder (inkl. Kontakt & Adresse).</p>
 
       <div class="card">
         <div class="table-wrap">
-          <table>
+          <table class="data-table">
             <thead>
               <tr>
-                <th>AUTOR</th>
-                <th>TITEL</th>
-                <th>GENRE</th>
-                <th>ZUSTAND</th>
-                <th>SPRACHE</th>
-                <th>E-MAIL</th>
-                <th>VERSANDADRESSE</th>
+                <th>Autor</th>
+                <th>Titel</th>
+                <th>Genre</th>
+                <th>Zustand</th>
+                <th>Sprache</th>
+                <th>E-Mail</th>
+                <th>Versandadresse</th>
               </tr>
             </thead>
             <tbody>
 HTML
 
 if [[ ! -f "$CSV_FILE" ]]; then
-  echo '<tr><td colspan="7">Noch keine Einträge vorhanden.</td></tr>'
+  echo '<tr><td colspan="7"><i>Noch keine Einträge vorhanden.</i></td></tr>'
 else
   tail -n +2 "$CSV_FILE" | while IFS= read -r line; do
     [[ -z "${line// /}" ]] && continue
@@ -82,8 +81,8 @@ cat <<'HTML'
         </div>
       </div>
 
-      <p class="list-link" style="margin-top: 12px;">
-        <a href="../book-exchange.html">← zurück zum Formular</a>
+      <p class="list-link" style="margin-top:12px;">
+        <a href="../book-exchange.html">← zurück</a>
       </p>
     </section>
   </main>
