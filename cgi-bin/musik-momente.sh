@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# CGI-Skript: Nimmt Formulardaten (POST) entgegen und speichert sie als neuen Eintrag in einer XML-Datei.
-# Redirect danach zurück auf ../musik.html#saved
-
 set -euo pipefail
 umask 002
 
@@ -10,19 +7,26 @@ DATA_DIR="$BASE_DIR/data"
 XML_FILE="$DATA_DIR/musikmomente.xml"
 
 POST_DATA=""
-if [ "${REQUEST_METHOD:-}" = "POST" ]; then
+if [[ "${REQUEST_METHOD:-}" == "POST" ]]; then
   read -r -n "${CONTENT_LENGTH:-0}" POST_DATA || true
 fi
 
-# Hilfsfunktion zum URL-Decoding
 urldecode() {
   local data=${1//+/ }
   printf '%b' "${data//%/\\x}"
 }
 
-# Werte extrahieren
 get_value() {
-  echo "$POST_DATA" | tr '&' '\n' | grep "^$1=" | cut -d= -f2- | urldecode
+  echo "$POST_DATA" | tr '&' '\n' | grep -m1 "^$1=" | cut -d= -f2- | urldecode
+}
+
+xml_escape() {
+  echo -n "$1" | sed \
+    -e 's/&/\&amp;/g' \
+    -e 's/</\&lt;/g' \
+    -e 's/>/\&gt;/g' \
+    -e "s/'/\&apos;/g" \
+    -e 's/"/\&quot;/g'
 }
 
 SONG="$(get_value song)"
@@ -31,30 +35,37 @@ MOOD="$(get_value mood)"
 SITUATION="$(get_value situation)"
 NOTES="$(get_value notes)"
 
-# Leere Pflichtfelder abfangen
 if [[ -z "$SONG" || -z "$ARTIST" ]]; then
   printf "Status: 303 See Other\r\n"
-  printf "Location: ../musik.html\r\n\r\n"
+  printf "Location: ../musik.html#error\r\n\r\n"
   exit 0
 fi
 
-# XML-Datei initialisieren, falls sie noch nicht existiert
+mkdir -p "$DATA_DIR"
+
 if [[ ! -f "$XML_FILE" ]]; then
   cat > "$XML_FILE" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Musikmomente>
+  <Titel>Songwünsche für den Wohnzimmer-Konzertabend</Titel>
 </Musikmomente>
 EOF
 fi
 
-# neuen Musikmoment einfügen (vor schliessendem Root-Tag)
+# Escape vor dem Einfügen
+SONG_E="$(xml_escape "$SONG")"
+ARTIST_E="$(xml_escape "$ARTIST")"
+MOOD_E="$(xml_escape "$MOOD")"
+SITUATION_E="$(xml_escape "$SITUATION")"
+NOTES_E="$(xml_escape "$NOTES")"
+
 TMP_FILE="$(mktemp)"
 
-awk -v song="$SONG" \
-    -v artist="$ARTIST" \
-    -v mood="$MOOD" \
-    -v situation="$SITUATION" \
-    -v notes="$NOTES" '
+awk -v song="$SONG_E" \
+    -v artist="$ARTIST_E" \
+    -v mood="$MOOD_E" \
+    -v situation="$SITUATION_E" \
+    -v notes="$NOTES_E" '
 /<\/Musikmomente>/ {
   print "  <Musikmoment>"
   print "    <Song>" song "</Song>"
@@ -70,6 +81,6 @@ awk -v song="$SONG" \
 mv "$TMP_FILE" "$XML_FILE"
 chmod 664 "$XML_FILE"
 
-# Redirect zurück zur Musik-Seite mit Erfolgshinweis
+# Nur URL updaten + saved anzeigen
 printf "Status: 303 See Other\r\n"
 printf "Location: ../musik.html#saved\r\n\r\n"
