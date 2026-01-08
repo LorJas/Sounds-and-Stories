@@ -9,8 +9,10 @@ BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DATA_DIR="$BASE_DIR/data"
 XML_FILE="$DATA_DIR/musikmomente.xml"
 
-# POST-Daten lesen
-read -r POST_DATA
+POST_DATA=""
+if [ "${REQUEST_METHOD:-}" = "POST" ]; then
+  read -r -n "${CONTENT_LENGTH:-0}" POST_DATA || true
+fi
 
 # Hilfsfunktion zum URL-Decoding
 urldecode() {
