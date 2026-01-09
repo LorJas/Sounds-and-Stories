@@ -27,3 +27,4 @@ Für die Ausführung wird ein Apache-Webserver mit CGI-Unterstützung benötigt 
 ```bash
 chmod 755 cgi-bin/*.sh
 chmod 775 data
+chmod 664 data/book-exchange.csv
