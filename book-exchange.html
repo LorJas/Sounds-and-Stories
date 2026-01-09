@@ -56,7 +56,19 @@
 
       <section class="section">
         <h2 class="section-title">Welche Bücher aktuell im Tauschpool sind</h2>
-        <p class="section-subtitle">In der Übersicht siehst du die aktuell verfügbaren Bücher im Tauschpool. Interne Angaben wie Zustand, Adresse und Kontakt werden nur für die Organisation des Tauschs verwendet.</p>
+        <p class="section-subtitle"> In der Übersicht siehst du beispielhaft einige Bücher im Tauschpool. Interne Angaben wie Zustand, Adresse und Kontakt werden nur für die Organisation des Tauschs verwendet. </p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Autor</th>
+                <th>Titel</th>
+                <th>Genre</th>
+                <th>Sprache</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </section>
 
       <!-- Formular -->
@@ -64,7 +76,7 @@
         <h2 id="be-form-title" class="section-title">Dein Buch in den Tauschpool aufnehmen</h2>
         <p class="section-subtitle"> Trage hier das Buch ein, das du weitergeben möchtest. Es erscheint in der Übersicht der verfügbaren Bücher. Im Gegenzug erhältst du später ein Überraschungsbuch per Post. Deine Adresse wird nur für den Versand verwendet. </p>
         
-        <form class="form" method="post" action="cgi-bin/book-exchange.sh" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded">  
+        <form class="form" method="post" action="cgi-bin/book-exchange.sh">  
           <div class="form-row form-row--2">
             <div>
               <label for="author">Autor</label>
@@ -146,9 +158,6 @@
             <button type="submit" class="btn btn-primary"> Buch zum Tausch freigeben </button>
           </div>
         </form>
-        <p class="list-link">
-          <a href="cgi-bin/book-public.sh">📚 Aktuelle Buchangebote anzeigen</a>
-        </p>
       </section>
     </main>
 
